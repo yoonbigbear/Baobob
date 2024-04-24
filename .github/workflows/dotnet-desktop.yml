@@ -2,7 +2,7 @@ name: .NET
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "dev" ]
 
@@ -23,12 +23,12 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 8.0.x
 
     - name: Restore dependencies
       run: dotnet restore
     
     - name: Build
-      run: dotnet build .\project-cs.sln --configuration Debug
+      run: dotnet build .\Baobob.sln --configuration Debug
     - name: Build
-      run: dotnet build .\project-cs.sln --configuration Release
+      run: dotnet build .\Baobob.sln --configuration Release
