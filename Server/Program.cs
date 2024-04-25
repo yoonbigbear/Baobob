@@ -1,10 +1,11 @@
 ﻿namespace Project
 {
 	using System.Net;
+	using System.Text;
 
 	internal class Program
 	{
-		private static void Main(string[] args)
+		private static async Task Main(string[] args)
 		{
 			string Ip = "127.0.0.1";
 			int Port = 11000;
@@ -12,13 +13,25 @@
 			System.Net.Sockets.TcpListener tcpListener = new(IPAddress.Parse(Ip), Port);
 			tcpListener.Start();
 
-			tcpListener.AcceptSocketAsync().Wait();
+			//Session
+			{
+				Console.WriteLine($"Accept Client");
+				await Listen(tcpListener);
+			}
 
-			Console.WriteLine($"Accept Client");
 			while (true)
 			{
-				Thread.Sleep(3000);
+				await Task.Delay(3000);
 			}
+		}
+
+		private static async Task Listen(System.Net.Sockets.TcpListener tcpListener)
+		{
+			var socket = await tcpListener.AcceptSocketAsync();
+
+			byte[] bytes = new byte[1024];
+
+			await socket.SendAsync(Encoding.UTF8.GetBytes("Hello"));
 		}
 	}
 }
