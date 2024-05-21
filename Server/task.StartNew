@@ -1,0 +1,56 @@
+﻿var t = Task.Factory.StartNew(() =>
+{
+    Task inner =Task.Factory.StartNew(() => {});
+    return inner;
+});
+여기서 t는 Task<Task>가 되고, Task의 델리게이트는 Func<TResult> 유형이 되고, TResult는 Task이므로 StartNew는 Task<Task>를 반환한다.
+
+
+var t = Task.Factory.StartNew(() =>
+{
+    Task<int> inner = Task.Factory.StartNew(() => 42));
+    return inner;
+});
+이제 t는 Task<Task<int>> 가 된다. Task의 델리게이트는 Func<TResult>가 되며, TResult는 이제 Task<int>가 된다. 따라서 StartNew는 Task,Task<int>>를 반환한다.
+
+var t = Task.Factory.StartNew(async delegate
+{
+    await Task.Delay(1000);
+    return 42;
+});
+async를 사용하게 되면서 컴파일러는 델리게이트가 Func<Task<int>>가 된다. 델리게이트를 호출하면 최종 완료를 나타내는 Task<int>가 반환된다. 델리게이트가 Func<Task<int>>이므로 TResult는 Task<int>가 되고 t의 유형은 Task<Task<int>>가 된다.
+
+Unwrap는 2개의 오버로드가 있는데 Task<Task> 와 Task<Task<TResult>> 이렇게 2가지다. 의미상으로 봤을대 inner task를 outer task의 결과로 return 하기 때문이다.
+Task<Task>에서 unwrap을 호출하면 내부 작업의 completion을 나타내는 새 작업이 반환되고(proxy), 마찬가지고 Task,Task<TResult>에서 unwrap을 호출하면 innertask의 completion을 나타내는 새 Task<TResult>가 반환된다.
+
+위에서 inner task가 42를 반환하기를 바란다면
+var t = Task.Factory.StartNew(async delegate
+{
+    await Task.Delay(1000);
+    return 42;
+}).Unwrap();
+로 작성해야 한다. 이제 t는 Task<int> 유형이 된다.
+
+Task.Run은 이처럼 Unwrap이 된 사용이 일반적일 것으로 에상하면서 구축된 함수이다.
+Run은 Action, Func<TResult> , Func<Task>, Func<Task<TResult>>로 오버로드가 있다. 
+따라서 이 둘 은 같다.
+var t = Task.Run(async delegate
+{
+    await Task.Delay(1000);
+    return 42;
+});
+
+var t = Task.Factory.StartNew(async delegate
+{
+    await Task.Delay(1000); 
+    return 42;
+}, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default).Unwrap();
+
+await는 Unwrap과 비슷하게 생각할 수 있는데, 만약 await를 사용하고싶지 않다면 Task<Task<int>>를 반환하는 경우
+int result = await await Task.Factory.StartNew(async delegate
+{
+    await Task.Delay(1000);
+    return 42;
+}, CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+와 같이도 사용할 수 있다.
+

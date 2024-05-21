@@ -12,14 +12,24 @@
   <ItemGroup>
     <Compile Remove="bin\**" />
     <Compile Remove="Debug\**" />
+    <Compile Include="Program.cs" />
     <EmbeddedResource Remove="bin\**" />
     <EmbeddedResource Remove="Debug\**" />
     <None Remove="bin\**" />
     <None Remove="Debug\**" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <EnableDefaultItems>false</EnableDefaultItems>
+  </PropertyGroup>
   
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="task.StartNew" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="8.0.0" />
   </ItemGroup>
   
 </Project>
