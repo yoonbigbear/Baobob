@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BaobabCore\BaobabCore.csproj" />
-    <ProjectReference Include="..\TcpCore\BaobabCore.csproj" />
   </ItemGroup>
 
 </Project>
