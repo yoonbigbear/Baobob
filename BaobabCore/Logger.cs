@@ -1,6 +1,5 @@
 ﻿namespace BaobobCore
 {
-	using Newtonsoft.Json;
 	using System.Threading.Tasks;
 
 	public static class Logger
@@ -132,7 +131,7 @@
 
 		public static void Write<T>(T type, object[] param) where T : System.Enum
 		{
-			var json = JsonConvert.SerializeObject(param);
+			var json = System.Text.Json.JsonSerializer.Serialize(param);
 
 			System.Text.StringBuilder log = new();
 			log.Append("{");
