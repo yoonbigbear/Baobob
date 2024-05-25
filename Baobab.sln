@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaobabCore", "BaobabCore\Ba
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaobabNetwork", "BaobobNetwork\BaobabNetwork.csproj", "{64A545EB-4EAB-4B54-8017-FDEBDB27BBD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaobobDispatcher", "BaobobDispatcher\BaobobDispatcher.csproj", "{E964FF3E-E6A1-4704-8F17-90DA0213D4E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaobabDispatcher", "BaobobDispatcher\BaobabDispatcher.csproj", "{E964FF3E-E6A1-4704-8F17-90DA0213D4E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
