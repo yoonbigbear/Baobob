@@ -23,5 +23,14 @@
 				caller.Invoke(message);
 			}
 		}
+
+		public bool IsAsyncCall(IMessage message)
+		{
+			if (!this.packetHandler.TryGetValue(message.MessageID, out ICaller? caller))
+			{
+				throw new HandlerNotFoundException();
+			}
+			return caller is IAsyncCaller;
+		}
 	}
 }
