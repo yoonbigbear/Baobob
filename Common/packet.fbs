@@ -1,0 +1,8 @@
+namespace Packet.Sample;
+
+table Monster {
+  id: int;
+  name: string;
+}
+
+root_type Monster;
