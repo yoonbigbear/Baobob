@@ -39,16 +39,13 @@
 				&& method.GetCustomAttribute<System.Runtime.CompilerServices.AsyncStateMachineAttribute>() != null;
 
 			// 파마리터 타입 확인
-			var parameterTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
+			Type[] parameterTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
+			if (!typeof(IMessage).IsAssignableFrom(parameterTypes[0]))
+				return;
 			// 델리게이트 타입 확인
-			var delegateType = Expression.GetDelegateType(parameterTypes.Concat(new[] { typeof(IMessage), method.ReturnType, }).ToArray());
-			// 리턴 타입
-			var returnType = method.ReturnType;
+			var delegateType = Expression.GetDelegateType(parameterTypes.Concat(new[] { method.ReturnType, }).ToArray());
 			// 델리게이트 생성
 			var del = Delegate.CreateDelegate(delegateType, this, method);
-
-			if (!typeof(IMessage).IsAssignableFrom(parameterTypes[0]))
-				throw new HandlerParameterNotMatchException();
 
 			// 인스턴스의 매개변수
 			var instanceParameter = Expression.Constant(this);
@@ -98,7 +95,7 @@
 					var attributes = methodinfo.GetCustomAttributes(typeof(BaobabDispatcherAttribute), false);
 					if (attributes.Length > 0)
 					{
-						CompileMethodToDelegateIMessageType(methodinfo);
+						CompileMethodToDelegateIFlatbufferType(methodinfo);
 					}
 				}
 			}
