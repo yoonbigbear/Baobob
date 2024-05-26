@@ -16,7 +16,7 @@
 		public string? Message { get; set; }
 	}
 
-	public class DispatcherHandlers : HandlerDispatcher
+	public class DispatcherHandlersIMessage<T> : HandlerDispatcher<T>
 	{
 		public string? Message1 { get; set; }
 

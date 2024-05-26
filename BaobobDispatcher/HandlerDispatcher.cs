@@ -2,19 +2,19 @@
 {
 	using System.Collections.Immutable;
 
-	public abstract partial class HandlerDispatcher
+	public abstract partial class HandlerDispatcher<T>
 	{
-		private ImmutableDictionary<int, ICaller> packetHandler = ImmutableDictionary<int, ICaller>.Empty;
+		private ImmutableDictionary<int, ICaller<T>> packetHandler = ImmutableDictionary<int, ICaller<T>>.Empty;
 
 		public int Count { get => packetHandler.Count; }
 
-		public async Task Invoke(IMessage message)
+		public async Task Invoke(int id, T message)
 		{
-			if (!this.packetHandler.TryGetValue(message.MessageID, out ICaller? caller))
+			if (!this.packetHandler.TryGetValue(id, out ICaller<T>? caller))
 			{
 				throw new HandlerNotFoundException();
 			}
-			if (caller is IAsyncCaller asyncCaller)
+			if (caller is IAsyncCaller<T> asyncCaller)
 			{
 				await asyncCaller.Invoke(message);
 			}
@@ -24,13 +24,13 @@
 			}
 		}
 
-		public bool IsAsyncCall(IMessage message)
+		public bool IsAsyncCall(int id, T message)
 		{
-			if (!this.packetHandler.TryGetValue(message.MessageID, out ICaller? caller))
+			if (!this.packetHandler.TryGetValue(id, out ICaller<T>? caller))
 			{
 				throw new HandlerNotFoundException();
 			}
-			return caller is IAsyncCaller;
+			return caller is IAsyncCaller<T>;
 		}
 	}
 }

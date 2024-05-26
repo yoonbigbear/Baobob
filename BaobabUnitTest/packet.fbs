@@ -1,0 +1,5 @@
+namespace UnitTest;
+
+table Packet {
+  name : string;
+}

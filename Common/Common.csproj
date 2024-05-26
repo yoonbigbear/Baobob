@@ -10,4 +10,12 @@
     <PackageReference Include="Google.FlatBuffers" Version="24.3.25" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Packet\Sample\" />
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="call .\compile_flatc.bat" />
+  </Target>
+
 </Project>

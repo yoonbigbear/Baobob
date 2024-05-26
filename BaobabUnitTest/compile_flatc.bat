@@ -1,0 +1,1 @@
+flatc --csharp --scoped-enums packet.fbs

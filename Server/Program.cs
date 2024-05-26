@@ -1,4 +1,7 @@
-﻿namespace Project
+﻿using BaobobCore;
+using MyGame.Sample;
+
+namespace Project
 {
 	internal class Program
 	{
@@ -6,7 +9,6 @@
 		{
 			while (true)
 			{
-				Thread.Sleep(1000);
 			}
 		}
 	}
