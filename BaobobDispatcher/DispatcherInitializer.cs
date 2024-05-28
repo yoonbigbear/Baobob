@@ -14,10 +14,7 @@
 			// 각 타입을 순회하면서 메서드 검사
 			foreach (Type type in types)
 			{
-				MethodInfo[] methods = type.GetMethods(BindingFlags.Public
-					| BindingFlags.NonPublic
-					| BindingFlags.Instance
-					| BindingFlags.Static);
+				MethodInfo[] methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance);
 
 				foreach (MethodInfo methodinfo in methods)
 				{
@@ -67,13 +64,13 @@
 				// lambda 생성
 				var lambda = Expression.Lambda<Func<T, Task>>(methodCall, messageParameter);
 				var func = lambda.Compile();
-				packetHandler = packetHandler.Add(messageId!.MessageID, new AsyncCaller<T>(func));
+				MessageHandler = MessageHandler.Add(messageId!.MessageID, new AsyncCaller<T>(func));
 			}
 			else
 			{
 				var lambda = Expression.Lambda<Action<T>>(methodCall, messageParameter);
 				var action = lambda.Compile();
-				packetHandler = packetHandler.Add(messageId!.MessageID, new Caller<T>(action));
+				MessageHandler = MessageHandler.Add(messageId!.MessageID, new Caller<T>(action));
 			}
 		}
 
@@ -85,10 +82,7 @@
 			// 각 타입을 순회하면서 메서드 검사
 			foreach (Type type in types)
 			{
-				MethodInfo[] methods = type.GetMethods(BindingFlags.Public
-					| BindingFlags.NonPublic
-					| BindingFlags.Instance
-					| BindingFlags.Static);
+				MethodInfo[] methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance);
 
 				foreach (MethodInfo methodinfo in methods)
 				{
@@ -111,15 +105,14 @@
 
 			// 파마리터 타입 확인
 			var parameterTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
+			if (!typeof(IFlatbufferObject).IsAssignableFrom(parameterTypes[0]))
+				return;
 			// 델리게이트 타입 확인
 			var delegateType = Expression.GetDelegateType(parameterTypes.Concat(new[] { method.ReturnType }).ToArray());
 			// 리턴 타입
 			var returnType = method.ReturnType;
 			// 델리게이트 생성
 			var del = Delegate.CreateDelegate(delegateType, this, method);
-
-			if (!typeof(IFlatbufferObject).IsAssignableFrom(parameterTypes[0]))
-				throw new HandlerParameterNotMatchException();
 
 			// 인스턴스의 매개변수
 			var instanceParameter = Expression.Constant(this);
@@ -141,13 +134,13 @@
 				// lambda 생성
 				var lambda = Expression.Lambda<Func<T, Task>>(methodCall, messageParameter);
 				var func = lambda.Compile();
-				packetHandler = packetHandler.Add(parameterTypes[0].FullName!.GetHashCode(), new AsyncCaller<T>(func));
+				MessageHandler = MessageHandler.Add(parameterTypes[0].FullName!.GetHashCode(), new AsyncCaller<T>(func));
 			}
 			else
 			{
 				var lambda = Expression.Lambda<Action<T>>(methodCall, messageParameter);
 				var action = lambda.Compile();
-				packetHandler = packetHandler.Add(parameterTypes[0].FullName!.GetHashCode(), new Caller<T>(action));
+				MessageHandler = MessageHandler.Add(parameterTypes[0].FullName!.GetHashCode(), new Caller<T>(action));
 			}
 		}
 	}

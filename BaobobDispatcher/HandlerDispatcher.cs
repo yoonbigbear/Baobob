@@ -4,13 +4,13 @@
 
 	public abstract partial class HandlerDispatcher<T>
 	{
-		private ImmutableDictionary<int, ICaller<T>> packetHandler = ImmutableDictionary<int, ICaller<T>>.Empty;
+		public ImmutableDictionary<int, ICaller<T>> MessageHandler { get; private set; } = ImmutableDictionary<int, ICaller<T>>.Empty;
 
-		public int Count { get => packetHandler.Count; }
+		public int Count { get => MessageHandler.Count; }
 
 		public async Task Invoke(int id, T message)
 		{
-			if (!this.packetHandler.TryGetValue(id, out ICaller<T>? caller))
+			if (!MessageHandler.TryGetValue(id, out ICaller<T>? caller))
 			{
 				throw new HandlerNotFoundException();
 			}
@@ -26,7 +26,7 @@
 
 		public bool IsAsyncCall(int id, T message)
 		{
-			if (!this.packetHandler.TryGetValue(id, out ICaller<T>? caller))
+			if (!MessageHandler.TryGetValue(id, out ICaller<T>? caller))
 			{
 				throw new HandlerNotFoundException();
 			}

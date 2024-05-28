@@ -10,18 +10,18 @@ namespace BaobabDispatcher
 		public string? Message2 { get; set; }
 
 		[BaobabDispatcher]
-		private void HandlePacket(Packet message)
+		public void HandlePacket(Packet1 message)
 		{
-			var packet = UnitTest.Packet.GetRootAsPacket(message.ByteBuffer);
-			Message1 = packet.Name;
+			var packet = UnitTest.Packet1.GetRootAsPacket1(message.ByteBuffer);
+			this.Message1 = packet.Name;
 		}
 
 		[BaobabDispatcher]
-		private async Task AsyncHandlePacket(Packet message)
+		public async Task AsyncHandlePacket(Packet2 message)
 		{
 			await Task.Yield();
-			var packet = UnitTest.Packet.GetRootAsPacket(message.ByteBuffer);
-			Message2 = packet.Name;
+			var packet = UnitTest.Packet2.GetRootAsPacket2(message.ByteBuffer);
+			this.Message2 = packet.Name;
 		}
 	}
 }

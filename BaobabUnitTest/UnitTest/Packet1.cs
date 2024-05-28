@@ -9,15 +9,15 @@ using global::System;
 using global::System.Collections.Generic;
 using global::Google.FlatBuffers;
 
-public struct Packet : IFlatbufferObject
+public struct Packet1 : IFlatbufferObject
 {
   private Table __p;
   public ByteBuffer ByteBuffer { get { return __p.bb; } }
   public static void ValidateVersion() { FlatBufferConstants.FLATBUFFERS_24_3_25(); }
-  public static Packet GetRootAsPacket(ByteBuffer _bb) { return GetRootAsPacket(_bb, new Packet()); }
-  public static Packet GetRootAsPacket(ByteBuffer _bb, Packet obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
+  public static Packet1 GetRootAsPacket1(ByteBuffer _bb) { return GetRootAsPacket1(_bb, new Packet1()); }
+  public static Packet1 GetRootAsPacket1(ByteBuffer _bb, Packet1 obj) { return (obj.__assign(_bb.GetInt(_bb.Position) + _bb.Position, _bb)); }
   public void __init(int _i, ByteBuffer _bb) { __p = new Table(_i, _bb); }
-  public Packet __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
+  public Packet1 __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public string Name { get { int o = __p.__offset(4); return o != 0 ? __p.__string(o + __p.bb_pos) : null; } }
 #if ENABLE_SPAN_T
@@ -27,23 +27,23 @@ public struct Packet : IFlatbufferObject
 #endif
   public byte[] GetNameArray() { return __p.__vector_as_array<byte>(4); }
 
-  public static Offset<UnitTest.Packet> CreatePacket(FlatBufferBuilder builder,
+  public static Offset<UnitTest.Packet1> CreatePacket1(FlatBufferBuilder builder,
       StringOffset nameOffset = default(StringOffset)) {
     builder.StartTable(1);
-    Packet.AddName(builder, nameOffset);
-    return Packet.EndPacket(builder);
+    Packet1.AddName(builder, nameOffset);
+    return Packet1.EndPacket1(builder);
   }
 
-  public static void StartPacket(FlatBufferBuilder builder) { builder.StartTable(1); }
+  public static void StartPacket1(FlatBufferBuilder builder) { builder.StartTable(1); }
   public static void AddName(FlatBufferBuilder builder, StringOffset nameOffset) { builder.AddOffset(0, nameOffset.Value, 0); }
-  public static Offset<UnitTest.Packet> EndPacket(FlatBufferBuilder builder) {
+  public static Offset<UnitTest.Packet1> EndPacket1(FlatBufferBuilder builder) {
     int o = builder.EndTable();
-    return new Offset<UnitTest.Packet>(o);
+    return new Offset<UnitTest.Packet1>(o);
   }
 }
 
 
-static public class PacketVerify
+static public class Packet1Verify
 {
   static public bool Verify(Google.FlatBuffers.Verifier verifier, uint tablePos)
   {

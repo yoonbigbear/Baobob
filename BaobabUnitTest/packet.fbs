@@ -1,5 +1,9 @@
 namespace UnitTest;
 
-table Packet {
+table Packet1 {
+  name : string;
+}
+
+table Packet2 {
   name : string;
 }

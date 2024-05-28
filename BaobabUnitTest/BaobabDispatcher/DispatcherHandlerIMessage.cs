@@ -23,13 +23,13 @@
 		public string? Message2 { get; set; }
 
 		[BaobabDispatcher]
-		private void HandlePacket(Message1 message)
+		public void HandlePacket(Message1 message)
 		{
 			Message1 = message.Message;
 		}
 
 		[BaobabDispatcher]
-		private async Task AsyncHandlePacket(Message2 message)
+		public async Task AsyncHandlePacket(Message2 message)
 		{
 			await Task.Yield();
 			Message2 = message.Message;
