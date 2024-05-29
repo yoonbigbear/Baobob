@@ -3,19 +3,17 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <BaseOutputPath>.\</BaseOutputPath>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="bin\**" />
     <Compile Remove="Debug\**" />
-    <EmbeddedResource Remove="Debug\**" />
-    <None Remove="Debug\**" />
   </ItemGroup>
-
+  
   <ItemGroup>
+    <ProjectReference Include="..\BaobobNetwork\BaobabNetwork.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 

@@ -1,30 +1,32 @@
 ﻿namespace Client
 {
-	using System.Text;
+	using System.Net;
+	using System.Net.Sockets;
 
 	internal class Program
 	{
 		private static async Task Main(string[] args)
 		{
-			string Ip = "127.0.0.1";
-			int Port = 11000;
-			System.Net.Sockets.TcpClient tcpClient = new();
+			int retryCount = 0;
 
-			tcpClient.ConnectAsync(Ip, Port).Wait();
-			if (tcpClient.Connected)
+			NetworkController networkSession = new NetworkController();
+			while (!networkSession.Connected)
 			{
-				Console.WriteLine($"Server Connected");
+				Console.WriteLine("Try Coonect to Server");
+				try
+				{
+					await networkSession.ConnectAsync(IPAddress.Parse("127.0.0.1"), 8888);
+					await Task.Delay(1000);
+				}
+				catch (SocketException ex)
+				{
+					Console.WriteLine($"Connection Failed. Retry attemp {retryCount += 1}");
+				}
 			}
 
 			while (true)
 			{
-				await Task.Delay(3000);
-				byte[] b = new byte[1024];
-				Memory<byte> buffer = new Memory<byte>(b);
-				var size = await tcpClient.Client.ReceiveAsync(buffer);
-				var str = Encoding.Default.GetString(buffer.Slice(0, size).Span);
-
-				Console.WriteLine(str);
+				Thread.Sleep(1000);
 			}
 		}
 	}

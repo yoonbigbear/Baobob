@@ -1,14 +1,22 @@
-﻿using BaobobCore;
-using MyGame.Sample;
-
-namespace Project
+﻿namespace Project
 {
-	internal class Program
+	using BaobobCore;
+	using Server;
+	using System.Net;
+
+	public class Program
 	{
-		private static void Main(string[] args)
+		private static void Main()
 		{
-			while (true)
+			using (GameServer builder = new GameServer(IPAddress.Any, 8888))
 			{
+				Logger.Trace("Start Server");
+				builder.StartListener(CancellationToken.None);
+
+				while (true)
+				{
+					Thread.Sleep(100);
+				}
 			}
 		}
 	}

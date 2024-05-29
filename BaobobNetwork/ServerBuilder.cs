@@ -8,7 +8,7 @@
 		private TcpListener listener { get; }
 		private bool disposedValue = false;
 
-		private ServerBuilder(IPAddress ip, short port)
+		public ServerBuilder(IPAddress ip, short port)
 		{
 			listener = new TcpListener(ip, port);
 		}

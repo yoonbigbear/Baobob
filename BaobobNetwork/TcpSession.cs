@@ -5,17 +5,19 @@ namespace BaobabNetwork
 {
 	public class TcpSession : IDisposable
 	{
+		public int SessionId { get; }
 		private NetworkStream tcpStream { get; }
 		private CancellationToken receiveToken;
 		private bool disposedValue;
 
-		public TcpSession(Socket socket)
+		public TcpSession(int sessionId, Socket socket)
 		{
+			SessionId = sessionId;
 			tcpStream = new NetworkStream(socket);
 			receiveToken = CancellationToken.None;
 		}
 
-		private async Task ReadAsync()
+		protected async Task ReadAsync()
 		{
 			try
 			{
@@ -35,16 +37,16 @@ namespace BaobabNetwork
 			}
 		}
 
-		private async Task WriteAsync(ReadOnlyMemory<byte> buffer)
+		protected async Task WriteAsync(ReadOnlyMemory<byte> buffer)
 		{
 			await tcpStream.WriteAsync(buffer);
 		}
 
-		public virtual void DeserializeMessage(ReadOnlyMemory<byte> buffer, int byteRecevied)
+		protected virtual void DeserializeMessage(ReadOnlyMemory<byte> buffer, int byteRecevied)
 		{
 		}
 
-		public virtual void SerializeMessage(ReadOnlyMemory<byte> buffer)
+		protected virtual void SerializeMessage(ReadOnlyMemory<byte> buffer)
 		{
 		}
 

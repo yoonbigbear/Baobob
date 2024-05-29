@@ -1,12 +1,14 @@
-﻿using System.Net;
-using System.Net.Sockets;
-
-namespace BaobabNetwork
+﻿namespace BaobabNetwork
 {
+	using System.Net;
+	using System.Net.Sockets;
+
 	public class ClientBuilder : IDisposable
 	{
-		private TcpClient? tcpClient { get; }
+		protected TcpClient? tcpClient { get; }
 		private bool disposedValue;
+
+		public bool Connected { get; set; }
 
 		public ClientBuilder()
 		{
@@ -21,7 +23,7 @@ namespace BaobabNetwork
 
 		public virtual void AcceptSession(Socket? socket)
 		{
-			BaobobCore.Logger.Trace("Session Connected");
+			Connected = true;
 		}
 
 		protected virtual void Dispose(bool disposing)
