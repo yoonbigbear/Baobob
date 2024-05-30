@@ -13,6 +13,7 @@
     <Compile Remove="bin\**" />
     <Compile Remove="Debug\**" />
     <Compile Include="GameServer.cs" />
+    <Compile Include="MessageHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="UserSession.cs" />
     <EmbeddedResource Remove="bin\**" />
@@ -36,6 +37,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\BaobabCore\BaobabCore.csproj" />
+    <ProjectReference Include="..\BaobobDispatcher\BaobabDispatcher.csproj" />
     <ProjectReference Include="..\BaobobNetwork\BaobabNetwork.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>

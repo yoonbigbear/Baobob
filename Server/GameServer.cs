@@ -14,14 +14,13 @@
 		public override void AcceptSession(Socket? socket)
 		{
 			base.AcceptSession(socket);
-			if (!SessionFactory.TryCreateSession(socket!, out TcpSession tcpSession))
+			var userSession = new UserSession(socket!);
+
+			if (!SessionContainer.TryAdd(userSession))
 			{
 				throw new BaobabNetworkException();
 			}
-
-			var userSession = tcpSession as UserSession;
-
-			Logger.Debug($"Client Connected {tcpSession.SessionId}");
+			Logger.Debug($"Client Connected {userSession.SessionId}");
 		}
 	}
 }

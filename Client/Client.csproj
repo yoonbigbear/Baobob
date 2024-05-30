@@ -9,10 +9,10 @@
 
   <ItemGroup>
     <Compile Remove="bin\**" />
-    <Compile Remove="Debug\**" />
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\BaobobDispatcher\BaobabDispatcher.csproj" />
     <ProjectReference Include="..\BaobobNetwork\BaobabNetwork.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>

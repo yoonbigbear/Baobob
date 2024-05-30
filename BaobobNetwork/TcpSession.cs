@@ -5,14 +5,13 @@ namespace BaobabNetwork
 {
 	public class TcpSession : IDisposable
 	{
-		public int SessionId { get; }
+		public int SessionId { get; set; }
 		private NetworkStream tcpStream { get; }
 		private CancellationToken receiveToken;
 		private bool disposedValue;
 
-		public TcpSession(int sessionId, Socket socket)
+		public TcpSession(Socket socket)
 		{
-			SessionId = sessionId;
 			tcpStream = new NetworkStream(socket);
 			receiveToken = CancellationToken.None;
 		}

@@ -4,11 +4,11 @@
 
 	public abstract partial class HandlerDispatcher<T>
 	{
-		public ImmutableDictionary<int, ICaller<T>> MessageHandler { get; private set; } = ImmutableDictionary<int, ICaller<T>>.Empty;
+		public static ImmutableDictionary<int, ICaller<T>> MessageHandler { get; private set; } = ImmutableDictionary<int, ICaller<T>>.Empty;
 
-		public int Count { get => MessageHandler.Count; }
+		public static int Count { get => MessageHandler.Count; }
 
-		public async Task Invoke(int id, T message)
+		public static async Task Invoke(int id, T message)
 		{
 			if (!MessageHandler.TryGetValue(id, out ICaller<T>? caller))
 			{
@@ -24,7 +24,7 @@
 			}
 		}
 
-		public bool IsAsyncCall(int id, T message)
+		public static bool IsAsyncCall(int id, T message)
 		{
 			if (!MessageHandler.TryGetValue(id, out ICaller<T>? caller))
 			{

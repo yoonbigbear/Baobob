@@ -18,18 +18,18 @@
 
 	public class DispatcherHandlersIMessage : HandlerDispatcher<IMessage>
 	{
-		public string? Message1 { get; set; }
+		public static string? Message1 { get; set; }
 
-		public string? Message2 { get; set; }
+		public static string? Message2 { get; set; }
 
 		[BaobabDispatcher]
-		public void HandlePacket(Message1 message)
+		public static void HandlePacket(Message1 message)
 		{
 			Message1 = message.Message;
 		}
 
 		[BaobabDispatcher]
-		public async Task AsyncHandlePacket(Message2 message)
+		public static async Task AsyncHandlePacket(Message2 message)
 		{
 			await Task.Yield();
 			Message2 = message.Message;

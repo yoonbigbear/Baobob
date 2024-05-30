@@ -11,6 +11,10 @@ struct Vec3 {
   y:float;
   z:float;
 }
+
+table Packet {
+	message: string;
+}
  
 table Monster {
   pos:Vec3; // Struct.

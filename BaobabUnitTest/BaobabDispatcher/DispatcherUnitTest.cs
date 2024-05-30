@@ -12,17 +12,15 @@
 		public void RegisterBaobobDispatchAttribute()
 		{
 			{
-				DispatcherHandlersIMessage dispatcher = new DispatcherHandlersIMessage();
-				dispatcher.BindHandlerIMessageType(Assembly.GetExecutingAssembly());
+				DispatcherHandlersIMessage.BindHandlerIMessageType(Assembly.GetExecutingAssembly());
 
-				Assert.IsTrue(dispatcher.Count == 2);
+				Assert.IsTrue(DispatcherHandlersIMessage.Count == 2);
 			}
 
 			{
-				DispatcherHandlersIFlatbuffer dispatcher = new DispatcherHandlersIFlatbuffer();
-				dispatcher.BindHandlerIFlatbufferType(Assembly.GetExecutingAssembly());
+				DispatcherHandlersIFlatbuffer.BindHandlerIFlatbufferType(Assembly.GetExecutingAssembly());
 
-				Assert.IsTrue(dispatcher.Count == 2);
+				Assert.IsTrue(DispatcherHandlersIFlatbuffer.Count == 2);
 			}
 		}
 
@@ -30,23 +28,21 @@
 		public async Task HandlerMessageEqual()
 		{
 			{
-				DispatcherHandlersIMessage dispatcher = new DispatcherHandlersIMessage();
-				dispatcher.BindHandlerIMessageType(Assembly.GetExecutingAssembly());
+				DispatcherHandlersIMessage.BindHandlerIMessageType(Assembly.GetExecutingAssembly());
 
 				string message1arg = "From Message1";
 				var message1 = new Message1 { Message = message1arg };
-				_ = dispatcher?.Invoke(message1.MessageID, message1);
-				Assert.AreEqual(dispatcher?.Message1, message1arg);
+				_ = DispatcherHandlersIMessage.Invoke(message1.MessageID, message1);
+				Assert.AreEqual(DispatcherHandlersIMessage.Message1, message1arg);
 
 				string message2arg = "From Message2";
 				var message2 = new Message2 { Message = message2arg };
-				_ = dispatcher?.Invoke(message2.MessageID, message2);
-				Assert.AreEqual(dispatcher?.Message2, message2arg);
+				await DispatcherHandlersIMessage.Invoke(message2.MessageID, message2);
+				Assert.AreEqual(DispatcherHandlersIMessage.Message2, message2arg);
 			}
 
 			{
-				DispatcherHandlersIFlatbuffer dispatcher = new DispatcherHandlersIFlatbuffer();
-				dispatcher.BindHandlerIFlatbufferType(Assembly.GetExecutingAssembly());
+				DispatcherHandlersIFlatbuffer.BindHandler(Assembly.GetExecutingAssembly());
 				{
 					string message1arg = "From Message1";
 
@@ -58,8 +54,8 @@
 
 					//read
 					var packet1 = Packet1.GetRootAsPacket1(buffer);
-					_ = dispatcher?.Invoke(typeof(Packet1).FullName!.GetHashCode(), packet1);
-					Assert.AreEqual(dispatcher?.Message1, message1arg);
+					_ = DispatcherHandlersIFlatbuffer.Invoke(typeof(Packet1).FullName!.GetHashCode(), packet1);
+					Assert.AreEqual(DispatcherHandlersIFlatbuffer.Message1, message1arg);
 				}
 
 				{
@@ -73,8 +69,8 @@
 
 					//read
 					var packet2 = Packet2.GetRootAsPacket2(buffer);
-					await dispatcher?.Invoke(typeof(Packet2).FullName!.GetHashCode(), packet2)!;
-					Assert.AreEqual(dispatcher?.Message2, message2arg);
+					await DispatcherHandlersIFlatbuffer.Invoke(typeof(Packet2).FullName!.GetHashCode(), packet2)!;
+					Assert.AreEqual(DispatcherHandlersIFlatbuffer.Message2, message2arg);
 				}
 			}
 		}
@@ -84,12 +80,12 @@
 		{
 			{
 				DispatcherHandlersIMessage dispatcher = new DispatcherHandlersIMessage();
-				dispatcher.BindHandlerIMessageType(Assembly.GetExecutingAssembly());
+				DispatcherHandlersIMessage.BindHandlerIMessageType(Assembly.GetExecutingAssembly());
 
 				var message1 = new Message1();
 				var message2 = new Message2();
-				Assert.IsFalse(dispatcher?.IsAsyncCall(message1.MessageID, message1));
-				Assert.IsTrue(dispatcher?.IsAsyncCall(message2.MessageID, message2));
+				Assert.IsFalse(DispatcherHandlersIMessage.IsAsyncCall(message1.MessageID, message1));
+				Assert.IsTrue(DispatcherHandlersIMessage.IsAsyncCall(message2.MessageID, message2));
 			}
 		}
 	}
