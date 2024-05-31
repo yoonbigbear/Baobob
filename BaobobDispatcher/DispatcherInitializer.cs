@@ -198,13 +198,13 @@
 				// lambda 생성
 				var lambda = Expression.Lambda<Func<T, Task>>(methodCall, messageParameter);
 				var func = lambda.Compile();
-				MessageHandler = MessageHandler.Add(parameterTypes[0].FullName!.GetHashCode(), new AsyncCaller<T>(func));
+				MessageHandler = MessageHandler.Add(parameterTypes[0].FullName!.ToString()!.GetHashCode(), new AsyncCaller<T>(func));
 			}
 			else
 			{
 				var lambda = Expression.Lambda<Action<T>>(methodCall, messageParameter);
 				var action = lambda.Compile();
-				MessageHandler = MessageHandler.Add(parameterTypes[0].FullName!.GetHashCode(), new Caller<T>(action));
+				MessageHandler = MessageHandler.Add(parameterTypes[0].FullName!.ToString().GetHashCode(), new Caller<T>(action));
 			}
 		}
 	}

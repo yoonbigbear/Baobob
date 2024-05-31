@@ -41,7 +41,7 @@ namespace BaobabNetwork
 			await tcpStream.WriteAsync(buffer);
 		}
 
-		protected virtual void DeserializeMessage(ReadOnlyMemory<byte> buffer, int byteRecevied)
+		protected virtual void DeserializeMessage(byte[] buffer, int byteRecevied)
 		{
 		}
 

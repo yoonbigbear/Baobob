@@ -1,8 +1,8 @@
 ﻿namespace Client
 {
+	using BaobabNetwork;
 	using Google.FlatBuffers;
 	using MyGame.Sample;
-	using System.Buffers;
 	using System.Net;
 	using System.Net.Sockets;
 	using System.Reflection;
@@ -35,8 +35,10 @@
 				var builder = new FlatBufferBuilder(128);
 				var offset = MyGame.Sample.Packet.CreatePacket(builder, builder.CreateSharedString("Hello?"));
 				builder.Finish(offset.Value);
-				var buffer = builder.DataBuffer;
-				await networkSession.SendAsync(buffer.ToArraySegment(0, offset.Value));
+				var id = typeof(Packet).FullName!.ToString()!.GetHashCode();
+				var buf = Payload.Serialize(id, builder.SizedByteArray());
+
+				await networkSession.SendAsync(buf);
 				Thread.Sleep(1000);
 			}
 		}
