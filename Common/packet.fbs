@@ -2,6 +2,13 @@
  
 namespace MyGame.Sample;
  
+enum PacketId : int
+{
+	Packet,
+	Monster,
+	Weapon,
+	Vec3,
+}
 enum Color:byte { Red = 0, Green, Blue = 2 }
  
 union Equipment { Weapon } // Optionally add more tables.

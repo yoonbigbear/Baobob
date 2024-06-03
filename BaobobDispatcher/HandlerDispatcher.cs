@@ -2,7 +2,7 @@
 {
 	using System.Collections.Immutable;
 
-	public abstract partial class HandlerDispatcher<T>
+	public abstract partial class HandlerDispatcher<T, EnumType>
 	{
 		public static ImmutableDictionary<int, ICaller<T>> MessageHandler { get; private set; } = ImmutableDictionary<int, ICaller<T>>.Empty;
 

@@ -1,5 +1,10 @@
 namespace UnitTest;
 
+enum PacketId : int
+{
+	Packet1,
+	Packet2
+}
 table Packet1 {
   name : string;
 }

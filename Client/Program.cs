@@ -35,8 +35,7 @@
 				var builder = new FlatBufferBuilder(128);
 				var offset = MyGame.Sample.Packet.CreatePacket(builder, builder.CreateSharedString("Hello?"));
 				builder.Finish(offset.Value);
-				var id = typeof(Packet).FullName!.ToString()!.GetHashCode();
-				var buf = Payload.Serialize(id, builder.SizedByteArray());
+				var buf = Payload.Serialize((int)PacketId.Packet, builder.SizedByteArray());
 
 				await networkSession.SendAsync(buf);
 				Thread.Sleep(1000);

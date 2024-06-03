@@ -5,7 +5,7 @@
 	using System.Linq.Expressions;
 	using System.Reflection;
 
-	public partial class HandlerDispatcher<T>
+	public partial class HandlerDispatcher<T, EnumType>
 	{
 		public static void BindHandler(Assembly assembly)
 		{   // 어셈블리 내의 모든 타입 가져오기
@@ -63,13 +63,13 @@
 				// lambda 생성
 				var lambda = Expression.Lambda<Func<T, Task>>(methodCall, messageParameter);
 				var func = lambda.Compile();
-				MessageHandler = MessageHandler.Add(parameterTypes[0].FullName!.GetHashCode(), new AsyncCaller<T>(func));
+				MessageHandler = MessageHandler.Add((int)Enum.Parse(typeof(EnumType), parameterTypes[0].Name), new AsyncCaller<T>(func));
 			}
 			else
 			{
 				var lambda = Expression.Lambda<Action<T>>(methodCall, messageParameter);
 				var action = lambda.Compile();
-				MessageHandler = MessageHandler.Add(parameterTypes[0].FullName!.GetHashCode(), new Caller<T>(action));
+				MessageHandler = MessageHandler.Add((int)Enum.Parse(typeof(EnumType), parameterTypes[0].Name), new Caller<T>(action));
 			}
 		}
 
@@ -198,13 +198,13 @@
 				// lambda 생성
 				var lambda = Expression.Lambda<Func<T, Task>>(methodCall, messageParameter);
 				var func = lambda.Compile();
-				MessageHandler = MessageHandler.Add(parameterTypes[0].FullName!.ToString()!.GetHashCode(), new AsyncCaller<T>(func));
+				MessageHandler = MessageHandler.Add((int)Enum.Parse(typeof(EnumType), parameterTypes[0].Name), new AsyncCaller<T>(func));
 			}
 			else
 			{
 				var lambda = Expression.Lambda<Action<T>>(methodCall, messageParameter);
 				var action = lambda.Compile();
-				MessageHandler = MessageHandler.Add(parameterTypes[0].FullName!.ToString().GetHashCode(), new Caller<T>(action));
+				MessageHandler = MessageHandler.Add((int)Enum.Parse(typeof(EnumType), parameterTypes[0].Name), new Caller<T>(action));
 			}
 		}
 	}

@@ -16,7 +16,7 @@
 		public string? Message { get; set; }
 	}
 
-	public class DispatcherHandlersIMessage : HandlerDispatcher<IMessage>
+	public class DispatcherHandlersIMessage : HandlerDispatcher<IMessage, int>
 	{
 		public static string? Message1 { get; set; }
 

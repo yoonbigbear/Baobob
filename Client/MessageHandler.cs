@@ -4,7 +4,7 @@
 	using Google.FlatBuffers;
 	using MyGame.Sample;
 
-	public class MessageHandler : HandlerDispatcher<IFlatbufferObject>
+	public class MessageHandler : HandlerDispatcher<IFlatbufferObject, PacketId>
 	{
 		[BaobabDispatcher]
 		public static void Vec3Handler(Vec3 message)

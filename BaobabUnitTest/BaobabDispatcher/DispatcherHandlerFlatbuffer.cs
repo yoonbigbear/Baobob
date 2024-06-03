@@ -3,7 +3,7 @@ using UnitTest;
 
 namespace BaobabDispatcher
 {
-	public class DispatcherHandlersIFlatbuffer : HandlerDispatcher<IFlatbufferObject>
+	public class DispatcherHandlersIFlatbuffer : HandlerDispatcher<IFlatbufferObject, PacketId>
 	{
 		public static string? Message1 { get; set; }
 

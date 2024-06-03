@@ -1,11 +1,11 @@
 ﻿namespace Server
 {
-	using Google.FlatBuffers;
 	using BaobabDispatcher;
-	using MyGame.Sample;
 	using BaobobCore;
+	using Google.FlatBuffers;
+	using MyGame.Sample;
 
-	public partial class MessageHandler : HandlerDispatcher<IFlatbufferObject>
+	public partial class MessageHandler : HandlerDispatcher<IFlatbufferObject, PacketId>
 	{
 		[BaobabDispatcher]
 		public static void Vec3Handler(Vec3 message)

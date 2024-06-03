@@ -20,7 +20,6 @@
 
 			Payload.Deserialize(ref payload, buffer);
 
-			var id = typeof(Packet).FullName!.ToString()!.GetHashCode();
 			_ = MessageHandler.Invoke(payload.ProtocolId, Packet.GetRootAsPacket(new Google.FlatBuffers.ByteBuffer(payload.Data)));
 		}
 
