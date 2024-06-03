@@ -30,14 +30,22 @@
 				}
 			}
 
+			RudpClient client = new RudpClient("127.0.0.1", 9000);
+			for (int i = 0; i < 210; ++i)
+			{
+				await client.SendAsync($"message {i}");
+			}
+
 			while (true)
 			{
 				var builder = new FlatBufferBuilder(128);
 				var offset = MyGame.Sample.Packet.CreatePacket(builder, builder.CreateSharedString("Hello?"));
 				builder.Finish(offset.Value);
 				var buf = Payload.Serialize((int)PacketId.Packet, builder.SizedByteArray());
-
-				await networkSession.SendAsync(buf);
+				if (networkSession.Connected)
+				{
+					await networkSession.SendAsync(buf);
+				}
 				Thread.Sleep(1000);
 			}
 		}
