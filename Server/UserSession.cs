@@ -17,7 +17,6 @@
 			base.DeserializeMessage(buffer, byteRecevied);
 
 			var payload = new Payload();
-
 			Payload.Deserialize(ref payload, buffer);
 
 			_ = MessageHandler.Invoke(payload.ProtocolId, Packet.GetRootAsPacket(new Google.FlatBuffers.ByteBuffer(payload.Data)));

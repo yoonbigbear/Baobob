@@ -14,13 +14,13 @@
 
 		public async Task SendAsync(ReadOnlyMemory<byte> readOnlyMemory)
 		{
-			tcpClient?.GetStream().WriteAsync(readOnlyMemory);
+			await tcpClient!.GetStream().WriteAsync(readOnlyMemory);
 		}
 
 		public async void ReadAsync()
 		{
 			var array = ArrayPool<byte>.Shared.Rent(4096);
-			//await tcpClient?.GetStream().ReadAsync(array);
+			await tcpClient!.GetStream().ReadAsync(array);
 		}
 	}
 }
