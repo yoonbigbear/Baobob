@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaobabDispatcher", "BaobobD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{ED4BF3CC-8196-45E9-AD7E-1B23B157E23D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{16DD082A-4926-4357-A3DE-1462BCCC2560}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csproj", "{16DD082A-4926-4357-A3DE-1462BCCC2560}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaobabRPC", "BaobabRPC\BaobabRPC.csproj", "{CA764AE8-7084-490A-BB70-3C9BEDD9A654}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{16DD082A-4926-4357-A3DE-1462BCCC2560}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16DD082A-4926-4357-A3DE-1462BCCC2560}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16DD082A-4926-4357-A3DE-1462BCCC2560}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA764AE8-7084-490A-BB70-3C9BEDD9A654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA764AE8-7084-490A-BB70-3C9BEDD9A654}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA764AE8-7084-490A-BB70-3C9BEDD9A654}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA764AE8-7084-490A-BB70-3C9BEDD9A654}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
