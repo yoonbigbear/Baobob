@@ -1,9 +1,11 @@
-﻿using System.Net;
-using System.Net.Sockets;
-using System.Text;
-
-namespace BaobabNetwork
+﻿namespace BaobabNetwork
 {
+	using System;
+	using System.Net;
+	using System.Net.Sockets;
+	using System.Text;
+	using System.Threading.Tasks;
+
 	public class RudpServer
 	{
 		private UdpClient udpClient;
@@ -44,7 +46,7 @@ namespace BaobabNetwork
 			if (packet.SequenceNumber == expectedSequenceNumber)
 			{
 				// 패킷 내용 출력
-				Console.WriteLine($"수신된 패킷: {packet.SequenceNumber} - {Encoding.UTF8.GetString(packet.Data)}");
+				Console.WriteLine($"수신된 패킷: {packet.SequenceNumber} - {Encoding.UTF8.GetString(packet.Data!)}");
 				expectedSequenceNumber++;
 			}
 			else if (packet.SequenceNumber > expectedSequenceNumber)

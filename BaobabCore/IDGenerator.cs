@@ -1,4 +1,7 @@
-﻿namespace BaobabCore
+﻿using System;
+using System.Threading;
+
+namespace BaobabCore
 {
 	public class IdGen
 	{
@@ -33,9 +36,9 @@
 			return guid;
 		}
 
-		private static uint eidSeqOffset = 0;
+		private static int eidSeqOffset = 0;
 
-		public static uint GenerateEID()
+		public static int GenerateEID()
 		{
 			return Interlocked.Increment(ref eidSeqOffset);
 		}

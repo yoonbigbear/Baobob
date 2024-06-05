@@ -1,7 +1,10 @@
 ﻿namespace BaobabNetwork
 {
+	using System;
 	using System.Net;
+	using System.Net.Http;
 	using System.Net.Sockets;
+	using System.Threading.Tasks;
 
 	public class ClientBuilder : IDisposable
 	{
@@ -17,7 +20,7 @@
 
 		public async Task ConnectAsync(IPAddress ip, short port)
 		{
-			await tcpClient?.ConnectAsync(new IPEndPoint(ip, port))!;
+			await tcpClient?.ConnectAsync(ip, port)!;
 			AcceptSession(tcpClient.Client);
 		}
 

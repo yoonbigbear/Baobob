@@ -2,8 +2,11 @@
 {
 	using Google.FlatBuffers;
 	using System;
+	using System.Linq;
 	using System.Linq.Expressions;
 	using System.Reflection;
+	using System.Threading.Tasks;
+	using static System.Collections.Specialized.BitVector32;
 
 	public partial class HandlerDispatcher<T, EnumType>
 	{
@@ -63,13 +66,21 @@
 				// lambda 생성
 				var lambda = Expression.Lambda<Func<T, Task>>(methodCall, messageParameter);
 				var func = lambda.Compile();
+#if NET5_0_OR_GREATER
 				MessageHandler = MessageHandler.Add((int)Enum.Parse(typeof(EnumType), parameterTypes[0].Name), new AsyncCaller<T>(func));
+#else
+				MessageHandler.TryAdd((int)Enum.Parse(typeof(EnumType), parameterTypes[0].Name), new AsyncCaller<T>(func));
+#endif
 			}
 			else
 			{
 				var lambda = Expression.Lambda<Action<T>>(methodCall, messageParameter);
 				var action = lambda.Compile();
+#if NET5_0_OR_GREATER
 				MessageHandler = MessageHandler.Add((int)Enum.Parse(typeof(EnumType), parameterTypes[0].Name), new Caller<T>(action));
+#else
+				MessageHandler.TryAdd((int)Enum.Parse(typeof(EnumType), parameterTypes[0].Name), new Caller<T>(action));
+#endif
 			}
 		}
 
@@ -131,13 +142,21 @@
 				// lambda 생성
 				var lambda = Expression.Lambda<Func<T, Task>>(methodCall, messageParameter);
 				var func = lambda.Compile();
+#if NET5_0_OR_GREATER
 				MessageHandler = MessageHandler.Add(messageId!.MessageID, new AsyncCaller<T>(func));
+#else
+				MessageHandler.TryAdd(messageId!.MessageID, new AsyncCaller<T>(func));
+#endif
 			}
 			else
 			{
 				var lambda = Expression.Lambda<Action<T>>(methodCall, messageParameter);
 				var action = lambda.Compile();
+#if NET5_0_OR_GREATER
 				MessageHandler = MessageHandler.Add(messageId!.MessageID, new Caller<T>(action));
+#else
+				MessageHandler.TryAdd(messageId!.MessageID, new Caller<T>(action));
+#endif
 			}
 		}
 
@@ -198,13 +217,21 @@
 				// lambda 생성
 				var lambda = Expression.Lambda<Func<T, Task>>(methodCall, messageParameter);
 				var func = lambda.Compile();
+#if NET5_0_OR_GREATER
 				MessageHandler = MessageHandler.Add((int)Enum.Parse(typeof(EnumType), parameterTypes[0].Name), new AsyncCaller<T>(func));
+#else
+				MessageHandler.TryAdd((int)Enum.Parse(typeof(EnumType), parameterTypes[0].Name), new AsyncCaller<T>(func));
+#endif
 			}
 			else
 			{
 				var lambda = Expression.Lambda<Action<T>>(methodCall, messageParameter);
 				var action = lambda.Compile();
+#if NET5_0_OR_GREATER
 				MessageHandler = MessageHandler.Add((int)Enum.Parse(typeof(EnumType), parameterTypes[0].Name), new Caller<T>(action));
+#else
+				MessageHandler.TryAdd((int)Enum.Parse(typeof(EnumType), parameterTypes[0].Name), new Caller<T>(action));
+#endif
 			}
 		}
 	}

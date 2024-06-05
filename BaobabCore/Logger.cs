@@ -1,5 +1,7 @@
 ﻿namespace BaobobCore
 {
+	using System;
+	using System.IO;
 	using System.Threading.Tasks;
 
 	public static class Logger
@@ -131,6 +133,7 @@
 
 		public static void Write<T>(T type, object[] param) where T : System.Enum
 		{
+#if NET5_0_OR_GREATER
 			var json = System.Text.Json.JsonSerializer.Serialize(param);
 
 			System.Text.StringBuilder log = new();
@@ -138,11 +141,15 @@
 			log.Append($"\"{type.ToString()}\":");
 			log.Append(json);
 			log.Append("}");
+
 #if DEBUG
 			Logger.Trace($"{DateTimeOffset.Now.DateTime} {log}");
 #else
 		FileIO($"[Trace] {DateTimeOffset.Now.DateTime} {log}");
 #endif
+#else
+#endif
+			throw new NotImplementedException();
 		}
 
 		public static void Write<T>(T type, object param) where T : System.Enum =>

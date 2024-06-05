@@ -1,5 +1,8 @@
 ﻿namespace BaobabDispatcher
 {
+	using System;
+	using System.Threading.Tasks;
+
 	public interface IMessage
 	{
 		int MessageID { get; }

@@ -26,7 +26,7 @@
 				}
 				catch (SocketException ex)
 				{
-					Console.WriteLine($"Connection Failed. Retry attemp {retryCount += 1}");
+					Console.WriteLine($"Connection Failed. Retry attemp {retryCount += 1} {ex.Message}");
 				}
 			}
 

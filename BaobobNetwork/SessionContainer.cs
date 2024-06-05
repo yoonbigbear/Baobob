@@ -1,11 +1,11 @@
 ﻿namespace BaobabNetwork
 {
 	using System.Collections.Concurrent;
-	using System.Net.Sockets;
+	using System.Threading;
 
 	public static class SessionContainer
 	{
-		public static ConcurrentDictionary<int, TcpSession> Seessions = new();
+		public static ConcurrentDictionary<int, TcpSession> Seessions = new ConcurrentDictionary<int, TcpSession>();
 
 		private static int sequenceId = 0;
 

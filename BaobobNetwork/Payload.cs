@@ -1,5 +1,6 @@
 ﻿namespace BaobabNetwork
 {
+	using System.IO;
 	using System.Runtime.InteropServices;
 
 	[StructLayout(LayoutKind.Sequential)]

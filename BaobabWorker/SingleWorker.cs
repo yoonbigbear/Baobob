@@ -1,5 +1,8 @@
 ﻿namespace BaobabWorker
 {
+	using System;
+	using System.Threading.Tasks;
+
 	/// <summary>
 	/// 동시에 하나의 작업만 실행할 수 있도록 보장한다.
 	/// </summary>
