@@ -1,5 +1,7 @@
 ﻿namespace BaobabNetwork
 {
+	using System;
+
 	public class BaobabNetworkException : Exception
 	{
 		public BaobabNetworkException()

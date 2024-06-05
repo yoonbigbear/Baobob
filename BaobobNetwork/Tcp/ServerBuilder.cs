@@ -1,7 +1,10 @@
 ﻿namespace BaobabNetwork
 {
+	using System;
 	using System.Net;
 	using System.Net.Sockets;
+	using System.Threading;
+	using System.Threading.Tasks;
 
 	public class ServerBuilder : IDisposable
 	{
@@ -21,7 +24,7 @@
 			{
 				while (true)
 				{
-					var accepted = await listener.AcceptSocketAsync(cancellationToken);
+					var accepted = await listener.AcceptSocketAsync();
 
 					AcceptSession(accepted);
 				}
@@ -40,7 +43,9 @@
 				if (disposing)
 				{
 					// TODO: 관리형 상태(관리형 개체)를 삭제합니다.
+#if NET5_0_OR_GREATER
 					listener.Dispose();
+#endif
 				}
 
 				// TODO: 비관리형 리소스(비관리형 개체)를 해제하고 종료자를 재정의합니다.

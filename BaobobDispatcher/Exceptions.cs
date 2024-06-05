@@ -1,5 +1,7 @@
 ﻿namespace BaobabDispatcher
 {
+	using System;
+
 	public class HandlerNotFoundException : Exception
 	{ }
 

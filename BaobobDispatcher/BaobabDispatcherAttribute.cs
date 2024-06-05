@@ -1,8 +1,7 @@
-﻿using System.Linq.Expressions;
-using System.Reflection;
-
-namespace BaobabDispatcher
+﻿namespace BaobabDispatcher
 {
+	using System;
+
 	[AttributeUsage(AttributeTargets.Method)]
 	public class BaobabDispatcherAttribute : Attribute
 	{

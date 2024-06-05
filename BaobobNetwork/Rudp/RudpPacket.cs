@@ -1,5 +1,7 @@
 ﻿namespace BaobabNetwork
 {
+	using System;
+
 	public class RudpPacket
 	{
 		public int SequenceNumber { get; set; }
