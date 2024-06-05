@@ -1,103 +1,109 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerManager : MonoBehaviour
 {
-	public Transform ItenPoint;
-	public Transform ShotPoint;
-	public GameObject ItemPrefab;
-	public GameObject ThrowPrefab;
-	public GameObject BowPrefab;
-	private Rigidbody2D rb;
-	private Animator animator;
-	public float moveSpeed = 1f;
+    public Transform ItenPoint;//ƒAƒCƒeƒ€‚Ì•\¦ŠJn“_
+    public Transform ShotPoint;//Ëo•Ší‚ÌŠJn“_
+    public GameObject ItemPrefab;//ƒAƒCƒeƒ€‚ÌPrefabƒXƒƒbƒg
+    public GameObject ThrowPrefab;//“Š“K—p‚ÌPrefabƒXƒƒbƒg
+    public GameObject BowPrefab;//‹|i–îj‚ÌPrefabƒXƒƒbƒg
+    Rigidbody2D rb;
+    Animator animator;
+    public float moveSpeed = 1f;
 
-	[SerializeField]
-	private Transform shotPointTransform = null;
+    [SerializeField]
+    private Transform shotPointTransform = null;
+   
 
-	private void Start()
-	{
-		Application.targetFrameRate = 60;
-		rb = GetComponent<Rigidbody2D>();
-		animator = GetComponent<Animator>();
-	}
 
-	private void Update()
-	{
-		float x = Input.GetAxisRaw("Horizontal");
-		float y = (x == 0) ? Input.GetAxisRaw("Vertical") : 0.0f;
+    void Start()
+    {
+        Application.targetFrameRate = 60;
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+    }
+    void Update()//•ûŒüƒL[‚ÅŒü‚«‚ğŒˆ‚ß‚Ä‰Ÿ‚µ‘±‚¯‚½‚çWalk‚É•\¦
+    {
+        float x = Input.GetAxisRaw("Horizontal");
+        float y = (x == 0) ? Input.GetAxisRaw("Vertical") : 0.0f;
+            
+        if (x != 0 || y != 0)
+        {
+            animator.SetFloat("x", x);
+            animator.SetFloat("y", y);
+            animator.SetBool("Walk", true);
+        }
+        else
+        {
+            animator.SetBool("Walk", false);
+        }
 
-		if (x != 0 || y != 0)
-		{
-			animator.SetFloat("x", x);
-			animator.SetFloat("y", y);
-			animator.SetBool("Walk", true);
-		}
-		else
-		{
-			animator.SetBool("Walk", false);
-		}
+        StartCoroutine(Action());
+        StartCoroutine(Shot());
+    }
+    IEnumerator Action()//Šes“®‚ğƒL[‚ÅÄ¶
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            animator.SetTrigger("Slash");
+        }
 
-		StartCoroutine(Action());
-		StartCoroutine(Shot());
-	}
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            animator.SetTrigger("Guard");
+        }
 
-	private IEnumerator Action()
-	{
-		if (Input.GetKeyDown(KeyCode.Z))
-		{
-			animator.SetTrigger("Slash");
-		}
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            animator.SetTrigger("Item");//Še•ûŒü‚Å“®‚«‚É‡‚í‚¹‚Ä–ò•r‚ğã‚É‚ ‚°‚é
+            Instantiate(ItemPrefab, ItenPoint.position, transform.rotation);
+        }
+                              
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            animator.SetTrigger("Damage");
+        }
 
-		if (Input.GetKeyDown(KeyCode.V))
-		{
-			animator.SetTrigger("Guard");
-		}
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            animator.SetTrigger("Dead");
+            this.transform.position = new Vector2(0f, -0.12f);
+            for (var i = 0; i < 64; i++)
+            {
+                yield return null;
+            }
+            this.transform.position = Vector2.zero;
+        }
+    }
+    IEnumerator Shot()//Ëo•Ší‚Ì‘I‘ğ‚Æ•\¦
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            animator.SetTrigger("Throw");
+            for (var i = 0; i < 30; i++)
+            {
+                // ƒRƒ‹[ƒ`ƒ“
+                yield return null;
+            }
+            Instantiate(ThrowPrefab, Vector2.zero, Quaternion.identity, shotPointTransform);
+        }
 
-		if (Input.GetKeyDown(KeyCode.B))
-		{
-			animator.SetTrigger("Item");
-			Instantiate(ItemPrefab, ItenPoint.position, transform.rotation);
-		}
-
-		if (Input.GetKeyDown(KeyCode.N))
-		{
-			animator.SetTrigger("Damage");
-		}
-
-		if (Input.GetKeyDown(KeyCode.M))
-		{
-			animator.SetTrigger("Dead");
-			this.transform.position = new Vector2(0f, -0.12f);
-			for (var i = 0; i < 64; i++)
-			{
-				yield return null;
-			}
-			this.transform.position = Vector2.zero;
-		}
-	}
-
-	private IEnumerator Shot()//ë¡…ë¢¯ë¸§ë”‡ê¶»ë©—ë¬–ê¶´?ë ‘
-	{
-		if (Input.GetKeyDown(KeyCode.X))
-		{
-			animator.SetTrigger("Throw");
-			for (var i = 0; i < 30; i++)
-			{
-				// ê¸“ê¹‘??ê¹›
-				yield return null;
-			}
-			Instantiate(ThrowPrefab, Vector2.zero, Quaternion.identity, shotPointTransform);
-		}
-
-		if (Input.GetKeyDown(KeyCode.C))
-		{
-			animator.SetTrigger("Bow");
-			for (var i = 0; i < 40; i++)
-			{
-				yield return null;
-			}
-			Instantiate(BowPrefab, Vector2.zero, Quaternion.identity, shotPointTransform);
-		}
-	}
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            animator.SetTrigger("Bow");
+            for (var i = 0; i < 40; i++)
+            {
+                yield return null;
+            }
+            Instantiate(BowPrefab, Vector2.zero, Quaternion.identity, shotPointTransform);
+        }  
+       
+    }
 }
+
+
+
+
