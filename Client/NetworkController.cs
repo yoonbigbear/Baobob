@@ -1,26 +1,21 @@
 ﻿namespace Client
 {
 	using BaobabNetwork;
-	using System.Buffers;
+	using System;
 	using System.Net.Sockets;
 
 	internal class NetworkController : ClientBuilder
 	{
+		private NetworkSession? session { get; set; }
+
 		public override void AcceptSession(Socket? socket)
 		{
 			base.AcceptSession(socket);
 			Console.WriteLine($"Connect success");
+
+			session = new NetworkSession(tcpClient!.Client, TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(4));
 		}
 
-		public async Task SendAsync(ReadOnlyMemory<byte> readOnlyMemory)
-		{
-			await tcpClient!.GetStream().WriteAsync(readOnlyMemory);
-		}
-
-		public async void ReadAsync()
-		{
-			var array = ArrayPool<byte>.Shared.Rent(4096);
-			await tcpClient!.GetStream().ReadAsync(array);
-		}
+		public async Task SendAsync(ReadOnlyMemory<byte> readOnlyMemory) => await session!.SendAsync(readOnlyMemory);
 	}
 }

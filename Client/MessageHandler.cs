@@ -16,7 +16,7 @@
 		public static async Task PacketHandler(Packet message)
 		{
 			await Task.Yield();
-			Console.WriteLine($"{message}");
+			Console.WriteLine($"{message.Message}");
 		}
 	}
 }

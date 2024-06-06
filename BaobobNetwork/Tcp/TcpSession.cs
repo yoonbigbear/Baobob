@@ -2,21 +2,23 @@
 {
 	using System;
 	using System.Buffers;
+	using System.Collections.Generic;
 	using System.Net.Sockets;
 	using System.Threading;
 	using System.Threading.Tasks;
 
-	public class TcpSession : IDisposable
+	public partial class TcpSession : IDisposable
 	{
 		public int SessionId { get; set; }
 		private NetworkStream tcpStream { get; }
-		private CancellationToken receiveToken;
 		private bool disposedValue;
+		private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-		public TcpSession(Socket socket)
+		public TcpSession(Socket socket, TimeSpan heartbeatInterval, TimeSpan heartbeatTimeout)
 		{
 			tcpStream = new NetworkStream(socket);
-			receiveToken = CancellationToken.None;
+			this.heartbeatInterval = heartbeatInterval;
+			this.heartbeatTimeout = heartbeatTimeout;
 		}
 
 		protected async Task ReadAsync()
@@ -26,7 +28,7 @@
 				while (true)
 				{
 					var buffer = ArrayPool<byte>.Shared.Rent(1024);
-					var byteReceived = await tcpStream.ReadAsync(buffer, receiveToken);
+					var byteReceived = await tcpStream.ReadAsync(buffer, cancellationTokenSource.Token);
 
 					DeserializeMessage(buffer, byteReceived);
 
@@ -35,6 +37,7 @@
 			}
 			finally
 			{
+				cancellationTokenSource.Dispose();
 				tcpStream.Close();
 			}
 		}
@@ -46,10 +49,12 @@
 
 		protected virtual void DeserializeMessage(byte[] buffer, int byteRecevied)
 		{
+			throw new NotImplementedException();
 		}
 
 		protected virtual void SerializeMessage(ReadOnlyMemory<byte> buffer)
 		{
+			throw new NotImplementedException();
 		}
 
 		protected virtual void Dispose(bool disposing)
@@ -59,6 +64,7 @@
 				if (disposing)
 				{
 					// TODO: 관리형 상태(관리형 개체)를 삭제합니다.
+					cancellationTokenSource.Dispose();
 					tcpStream.Dispose();
 				}
 

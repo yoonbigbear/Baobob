@@ -7,7 +7,7 @@
 	public struct Payload
 	{
 		public int ProtocolId { get; set; }
-		public int Length { get; set; }
+		public short Length { get; set; }
 		public bool Encrypted { get; set; }
 		public bool Compressed { get; set; }
 		public byte[] Data { get; set; }
@@ -18,10 +18,10 @@
 			using (MemoryStream ms = new MemoryStream(buf))
 			using (BinaryWriter bw = new BinaryWriter(ms))
 			{
-				bw.Write((int)id);
-				bw.Write((ushort)bytes.Length);
-				bw.Write((bool)encrypted);
-				bw.Write((bool)compressed);
+				bw.Write(id);
+				bw.Write((short)bytes.Length);
+				bw.Write(encrypted);
+				bw.Write(compressed);
 				bw.Write(bytes);
 				return buf;
 			}
