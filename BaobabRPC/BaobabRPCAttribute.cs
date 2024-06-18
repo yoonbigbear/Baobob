@@ -38,9 +38,24 @@
 		}
 	}
 
+	/// <summary>
+	/// IDL이 된다.
+	/// </summary>
 	public interface ISampleRPC
 	{
 		[BaobabRPCIDL]
 		public void SampleRPC();
+	}
+
+	public class RpcRequest
+	{
+		public string Method { get; set; }
+		public object[] Parameters { get; set; }
+	}
+
+	public class RpcResponse
+	{
+		public object Result { get; set; }
+		public string Error { get; set; }
 	}
 }
