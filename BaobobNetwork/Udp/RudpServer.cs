@@ -40,16 +40,16 @@
 		private void ProcessReceivedPacket(UdpReceiveResult result)
 		{
 			// 클라이언트로부터 UDP 패킷 수신
-			RudpPacket packet = RudpPacket.FromBytes(result.Buffer);
+			RudpPacket packet = RudpPacket.Deserialize(result.Buffer);
 
 			// 순서 번호가 예상된 번호와 일치하는지 확인
-			if (packet.SequenceNumber == expectedSequenceNumber)
+			if (packet.Header.SequenceNumber == expectedSequenceNumber)
 			{
 				// 패킷 내용 출력
-				Console.WriteLine($"수신된 패킷: {packet.SequenceNumber} - {Encoding.UTF8.GetString(packet.Data!)}");
+				Console.WriteLine($"수신된 패킷: {packet.Header.SequenceNumber} - {Encoding.UTF8.GetString(packet.Data!)}");
 				expectedSequenceNumber++;
 			}
-			else if (packet.SequenceNumber > expectedSequenceNumber)
+			else if (packet.Header.SequenceNumber > expectedSequenceNumber)
 			{
 				if (isCongested)
 				{
@@ -59,12 +59,12 @@
 				}
 
 				if (udpClient.Available >= MaxBufferSize)
-					Console.WriteLine($"수신된 패킷: {packet.SequenceNumber} - 대기중인 패킷 {expectedSequenceNumber}");
+					Console.WriteLine($"수신된 패킷: {packet.Header.SequenceNumber} - 대기중인 패킷 {expectedSequenceNumber}");
 				SendAck(BitConverter.GetBytes(expectedSequenceNumber), result.RemoteEndPoint);
 			}
 
 			// ACK 전송: 클라이언트의 IPEndPoint를 사용하여 ACK 전송
-			byte[] ack = BitConverter.GetBytes(packet.SequenceNumber);
+			byte[] ack = BitConverter.GetBytes(packet.Header.SequenceNumber);
 			SendAck(ack, result.RemoteEndPoint);
 		}
 	}

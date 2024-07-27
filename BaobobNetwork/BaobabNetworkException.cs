@@ -22,12 +22,12 @@
 		}
 	}
 
-	public class BaobabInvalidChecksum : Exception
+	public class BaobabInvalidRudpHeader : Exception
 	{
-		public BaobabInvalidChecksum()
+		public BaobabInvalidRudpHeader()
 		{ }
 
-		public BaobabInvalidChecksum(string? message) : base(message)
+		public BaobabInvalidRudpHeader(string? message) : base(message)
 		{
 		}
 	}

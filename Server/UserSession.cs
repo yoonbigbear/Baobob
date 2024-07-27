@@ -1,6 +1,7 @@
 ﻿namespace Server
 {
 	using BaobabNetwork;
+	using BaobabNetwork.Tcp;
 	using Google.FlatBuffers;
 	using MyGame.Sample;
 	using System;
@@ -17,8 +18,8 @@
 
 		protected override void DeserializeMessage(byte[] buffer, int byteRecevied)
 		{
-			var payload = new Payload();
-			Payload.Deserialize(ref payload, buffer);
+			var payload = new TcpPayload();
+			TcpPayload.Deserialize(ref payload, buffer);
 
 			switch (payload.ProtocolId)
 			{
@@ -35,7 +36,7 @@
 			var builder = new FlatBufferBuilder(128);
 			var offset = MyGame.Sample.Packet.CreatePacket(builder, builder.CreateSharedString("Im server"));
 			builder.Finish(offset.Value);
-			var buf = Payload.Serialize((int)PacketId.Packet, builder.SizedByteArray());
+			var buf = TcpPayload.Serialize((int)PacketId.Packet, builder.SizedByteArray());
 			_ = WriteAsync(buf);
 		}
 	}

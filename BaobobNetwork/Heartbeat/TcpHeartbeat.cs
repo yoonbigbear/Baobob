@@ -1,5 +1,6 @@
 ﻿namespace BaobabNetwork
 {
+	using BaobabNetwork.Tcp;
 	using BaobobCore;
 	using System;
 	using System.Threading.Tasks;
@@ -35,7 +36,7 @@
 					while (true)
 					{
 						sentTime = DateTime.UtcNow;
-						await tcpStream.WriteAsync(Payload.Serialize((int)HeartbeatProtocol.Knock, BitConverter.GetBytes(sentTime.Ticks)));
+						await tcpStream.WriteAsync(TcpPayload.Serialize((int)HeartbeatProtocol.Knock, BitConverter.GetBytes(sentTime.Ticks)));
 						await Task.Delay(heartbeatInterval);
 					}
 				}, cancellationTokenSource.Token);
@@ -79,7 +80,7 @@
 		protected async void ResponseKnockFromServer()
 		{
 			sentTime = DateTime.UtcNow;
-			await tcpStream.WriteAsync(Payload.Serialize((int)HeartbeatProtocol.Knock, BitConverter.GetBytes(sentTime.Ticks)));
+			await tcpStream.WriteAsync(TcpPayload.Serialize((int)HeartbeatProtocol.Knock, BitConverter.GetBytes(sentTime.Ticks)));
 		}
 
 		/// <summary>
@@ -96,7 +97,7 @@
 			}
 			rtt = displacement / 2;
 			Logger.Trace($"RTT : {rtt.TotalMilliseconds}");
-			await WriteAsync(Payload.Serialize((int)HeartbeatProtocol.Response, BitConverter.GetBytes(now.Ticks)));
+			await WriteAsync(TcpPayload.Serialize((int)HeartbeatProtocol.Response, BitConverter.GetBytes(now.Ticks)));
 		}
 
 		/// <summary>

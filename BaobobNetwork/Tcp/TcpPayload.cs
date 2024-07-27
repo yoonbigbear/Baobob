@@ -1,10 +1,10 @@
-﻿namespace BaobabNetwork
+﻿namespace BaobabNetwork.Tcp
 {
 	using System.IO;
 	using System.Runtime.InteropServices;
 
-	[StructLayout(LayoutKind.Sequential)]
-	public struct Payload
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+	public struct TcpPayload
 	{
 		public int ProtocolId { get; set; }
 		public short Length { get; set; }
@@ -27,7 +27,7 @@
 			}
 		}
 
-		public static void Deserialize(ref Payload payload, byte[] packet)
+		public static void Deserialize(ref TcpPayload payload, byte[] packet)
 		{
 			using (MemoryStream ms = new MemoryStream(packet))
 			using (BinaryReader br = new BinaryReader(ms))

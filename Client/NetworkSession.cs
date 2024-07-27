@@ -1,6 +1,7 @@
 ﻿namespace Client
 {
 	using BaobabNetwork;
+	using BaobabNetwork.Tcp;
 	using MyGame.Sample;
 	using System.Net.Sockets;
 
@@ -16,8 +17,8 @@
 
 		protected override void DeserializeMessage(byte[] buffer, int byteRecevied)
 		{
-			var payload = new Payload();
-			Payload.Deserialize(ref payload, buffer);
+			var payload = new TcpPayload();
+			TcpPayload.Deserialize(ref payload, buffer);
 
 			switch (payload.ProtocolId)
 			{
