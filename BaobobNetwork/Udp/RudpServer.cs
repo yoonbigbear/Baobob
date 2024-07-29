@@ -64,8 +64,7 @@
 			}
 
 			// ACK 전송: 클라이언트의 IPEndPoint를 사용하여 ACK 전송
-			byte[] ack = BitConverter.GetBytes(packet.Header.SequenceNumber);
-			SendAck(ack, result.RemoteEndPoint);
+			SendAck(BitConverter.GetBytes(packet.Header.SequenceNumber), result.RemoteEndPoint);
 		}
 	}
 }
