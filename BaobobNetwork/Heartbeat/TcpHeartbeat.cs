@@ -86,16 +86,16 @@
 		/// <summary>
 		/// Response를 받으면 다시 Response를 응답하면서 RTT를 계산합니다.
 		/// </summary>
-		protected async void CalculateRTT()
+		protected async void CalculateRTT(long sentTime)
 		{
 			var now = DateTime.UtcNow;
-			var displacement = now - sentTime;
-			if (displacement > heartbeatTimeout)
+			var displacement = now.Ticks - sentTime;
+			if (displacement > heartbeatTimeout.Ticks)
 			{
 				OnHeartBeatTimeout();
 				return;
 			}
-			rtt = displacement / 2;
+			rtt = TimeSpan.FromTicks(displacement >> 1);
 			Logger.Trace($"RTT : {rtt.TotalMilliseconds}");
 			await WriteAsync(TcpPayload.Serialize((int)HeartbeatProtocol.Response, BitConverter.GetBytes(now.Ticks)));
 		}

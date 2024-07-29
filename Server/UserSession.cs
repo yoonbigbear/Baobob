@@ -24,7 +24,7 @@
 			switch (payload.ProtocolId)
 			{
 				case (int)TcpSession.HeartbeatProtocol.Knock:
-					CalculateRTT();
+					CalculateRTT(BitConverter.ToInt64(payload.Data));
 					return;
 
 				case (int)TcpSession.HeartbeatProtocol.Response:

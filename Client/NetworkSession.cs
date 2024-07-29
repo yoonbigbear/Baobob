@@ -11,8 +11,6 @@
 			: base(socket, heartbeatInterval, heartbeatTimeout)
 		{
 			_ = ReadAsync();
-
-			RepeatCheckTimeout();
 		}
 
 		protected override void DeserializeMessage(byte[] buffer, int byteRecevied)
@@ -27,7 +25,7 @@
 					return;
 
 				case (int)TcpSession.HeartbeatProtocol.Response:
-					CalculateRTT();
+					CalculateRTT(BitConverter.ToInt64(payload.Data));
 					return;
 			}
 
