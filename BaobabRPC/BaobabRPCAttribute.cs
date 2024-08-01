@@ -49,13 +49,13 @@
 
 	public class RpcRequest
 	{
-		public string Method { get; set; }
-		public object[] Parameters { get; set; }
+		public string? Method { get; set; }
+		public object[]? Parameters { get; set; }
 	}
 
 	public class RpcResponse
 	{
-		public object Result { get; set; }
-		public string Error { get; set; }
+		public object? Result { get; set; }
+		public string? Error { get; set; }
 	}
 }

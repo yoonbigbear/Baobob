@@ -12,6 +12,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\BaobabP2P\BaobabP2P.csproj" />
     <ProjectReference Include="..\BaobobDispatcher\BaobabDispatcher.csproj" />
     <ProjectReference Include="..\BaobobNetwork\BaobabNetwork.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
