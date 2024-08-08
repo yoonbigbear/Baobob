@@ -24,10 +24,14 @@
 			switch (payload.ProtocolId)
 			{
 				case (int)TcpSession.HeartbeatProtocol.Knock:
-					CalculateRTT(BitConverter.ToInt64(payload.Data));
+					_ = CalculateRTT(BitConverter.ToInt64(payload.Data));
 					return;
 
 				case (int)TcpSession.HeartbeatProtocol.Response:
+					return;
+
+				case (int)TcpSession.HeartbeatProtocol.TimeRequest:
+					_ = TimeRequest();
 					return;
 			}
 

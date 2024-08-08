@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace BaobabCore
 {
-	public class IdGen
+	public class IdGenerator
 	{
 		public enum IdType : ulong
 		{

@@ -21,11 +21,16 @@
 			switch (payload.ProtocolId)
 			{
 				case (int)TcpSession.HeartbeatProtocol.Knock:
-					ResponseKnockFromServer();
+					_ = ResponseKnockFromServer();
 					return;
 
 				case (int)TcpSession.HeartbeatProtocol.Response:
-					CalculateRTT(BitConverter.ToInt64(payload.Data));
+					_ = CalculateRTT(BitConverter.ToInt64(payload.Data));
+					_ = TimeRequest();
+					return;
+
+				case (int)TcpSession.HeartbeatProtocol.TimeRequest:
+					EstimateServerTime(BitConverter.ToInt64(payload.Data));
 					return;
 			}
 
