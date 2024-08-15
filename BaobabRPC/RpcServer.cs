@@ -27,8 +27,8 @@
 		{
 			while (true)
 			{
-				var client = await _listener.AcceptTcpClientAsync();
-				Task.Run(() => HandleClient(client));
+				var client = await _listener.AcceptTcpClientAsync().ConfigureAwait(false);
+				_ = Task.Run(() => HandleClient(client)).ConfigureAwait(false);
 			}
 		}
 
@@ -43,19 +43,19 @@
 					{
 						try
 						{
-							var requestJson = await reader.ReadLineAsync();
+							var requestJson = await reader.ReadLineAsync().ConfigureAwait(false);
 							var request = JsonSerializer.Deserialize<RpcRequest>(requestJson);
 							var response = ProcessRequest(request);
 							var responseJson = JsonSerializer.Serialize(response);
-							await writer.WriteLineAsync(responseJson);
-							await writer.FlushAsync();
+							await writer.WriteLineAsync(responseJson).ConfigureAwait(false);
+							await writer.FlushAsync().ConfigureAwait(false);
 						}
 						catch (Exception ex)
 						{
 							var errorResponse = new RpcResponse { Error = ex.Message };
 							var errorResponseJson = JsonSerializer.Serialize(errorResponse);
-							await writer.WriteLineAsync(errorResponseJson);
-							await writer.FlushAsync();
+							await writer.WriteLineAsync(errorResponseJson).ConfigureAwait(false);
+							await writer.FlushAsync().ConfigureAwait(false);
 						}
 					}
 				}

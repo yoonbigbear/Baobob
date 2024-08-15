@@ -47,13 +47,13 @@
 				}
 
 				byte[] packetBytes = packet.Serialize();
-				await SendAsync(packetBytes, packetBytes.Length, remoteEndPoint);
+				await SendAsync(packetBytes, packetBytes.Length, remoteEndPoint).ConfigureAwait(false);
 
 				using (var cts = new CancellationTokenSource(timeoutInterval))
 				{
 					try
 					{
-						UdpReceiveResult result = await ReceiveAsync().WithCancellation(cts.Token);
+						UdpReceiveResult result = await ReceiveAsync().WithCancellation(cts.Token).ConfigureAwait(false);
 						int ackSequenceNumber = BitConverter.ToInt32(result.Buffer, 0);
 
 						if (ackSequenceNumber == sequenceNumber)
@@ -68,7 +68,7 @@
 					{
 						// 손실된 패킷 재전송
 						Console.WriteLine($"타임아웃, 패킷 재전송 {retransmissions}");
-						await SendAsync(packetBytes, packetBytes.Length, remoteEndPoint);
+						await SendAsync(packetBytes, packetBytes.Length, remoteEndPoint).ConfigureAwait(false);
 						retransmissions++;
 					}
 				}
@@ -82,7 +82,7 @@
 		public async Task SendAsync(string message)
 		{
 			byte[] buffer = Encoding.UTF8.GetBytes(message);
-			await SendAsync(buffer);
+			await SendAsync(buffer).ConfigureAwait(false);
 		}
 	}
 
@@ -93,7 +93,7 @@
 			using (var delayCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken))
 			{
 				var delayTask = Task.Delay(Timeout.Infinite, delayCts.Token);
-				var completedTask = await Task.WhenAny(task, delayTask);
+				var completedTask = await Task.WhenAny(task, delayTask).ConfigureAwait(false);
 
 				if (completedTask == delayTask)
 				{
@@ -101,7 +101,7 @@
 				}
 
 				delayCts.Cancel();
-				return await task;
+				return await task.ConfigureAwait(false);
 			}
 		}
 	}

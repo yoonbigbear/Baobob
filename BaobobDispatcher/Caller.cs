@@ -46,7 +46,7 @@
 			{
 				throw new HandlerNotImplementedException();
 			}
-			await asyncFunc;
+			await asyncFunc.ConfigureAwait(false);
 		}
 
 		void ICaller<T>.Invoke(T message) => throw new NotImplementedException();

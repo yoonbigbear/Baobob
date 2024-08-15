@@ -25,7 +25,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaobabP2P", "BaobabP2P\Baob
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaobabQR", "BaobabQR\BaobabQR.csproj", "{9F7FFF43-A1A4-4D6A-B6C2-6F5FEC199E0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaobabNodeNetwork", "BaobabNodeNetwork\BaobabNodeNetwork.csproj", "{8AD71F04-0113-4EDE-BFE2-B42EB82D403E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaobabNodeNetwork", "BaobabNodeNetwork\BaobabNodeNetwork.csproj", "{8AD71F04-0113-4EDE-BFE2-B42EB82D403E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8E95A854-225C-42BA-BB8A-2F5EB8FD6D46}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

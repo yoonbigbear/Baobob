@@ -28,7 +28,7 @@
 				while (true)
 				{
 					var buffer = ArrayPool<byte>.Shared.Rent(1024);
-					var byteReceived = await tcpStream.ReadAsync(buffer, cancellationTokenSource.Token);
+					var byteReceived = await tcpStream.ReadAsync(buffer, cancellationTokenSource.Token).ConfigureAwait(false);
 
 					DeserializeMessage(buffer, byteReceived);
 
@@ -44,7 +44,7 @@
 
 		protected async Task WriteAsync(ReadOnlyMemory<byte> buffer)
 		{
-			await tcpStream.WriteAsync(buffer);
+			await tcpStream.WriteAsync(buffer).ConfigureAwait(false);
 		}
 
 		protected virtual void DeserializeMessage(byte[] buffer, int byteRecevied)

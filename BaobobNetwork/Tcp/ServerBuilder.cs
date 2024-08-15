@@ -24,7 +24,7 @@
 			{
 				while (true)
 				{
-					var accepted = await listener.AcceptSocketAsync();
+					var accepted = await listener.AcceptSocketAsync().ConfigureAwait(false);
 
 					AcceptSession(accepted);
 				}

@@ -95,7 +95,7 @@
 				}
 				using (var sw = File.AppendText($"{path}{filename}"))
 				{
-					await sw.WriteLineAsync(str);
+					await sw.WriteLineAsync(str).ConfigureAwait(false);
 				}
 			});
 		}
@@ -126,7 +126,7 @@
 
 				using (var sw = File.AppendText($"{path}{filename}"))
 				{
-					await sw.WriteLineAsync(str);
+					await sw.WriteLineAsync(str).ConfigureAwait(false);
 				}
 			});
 		}

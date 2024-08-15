@@ -34,13 +34,13 @@
 
 			if (heartbeatInterval.TotalSeconds > 2)
 			{
-				var task = Task.Run(async () =>
+				var task = Task.Factory.StartNew(async () =>
 				{
 					while (true)
 					{
 						sentTime = DateTime.UtcNow;
-						await tcpStream.WriteAsync(TcpPayload.Serialize((int)HeartbeatProtocol.Knock, BitConverter.GetBytes(sentTime.Ticks)));
-						await Task.Delay(heartbeatInterval);
+						await tcpStream.WriteAsync(TcpPayload.Serialize((int)HeartbeatProtocol.Knock, BitConverter.GetBytes(sentTime.Ticks))).ConfigureAwait(false);
+						await Task.Delay(heartbeatInterval).ConfigureAwait(false);
 					}
 				}, cancellationTokenSource.Token);
 			}
@@ -61,7 +61,7 @@
 				{
 					while (true)
 					{
-						await Task.Delay(heartbeatInterval);
+						await Task.Delay(heartbeatInterval).ConfigureAwait(false);
 						var now = DateTime.UtcNow;
 						var timeSpent = now - sentTime;
 						if (timeSpent > heartbeatTimeout)
@@ -83,7 +83,8 @@
 		protected async Task ResponseKnockFromServer()
 		{
 			sentTime = DateTime.UtcNow;
-			await tcpStream.WriteAsync(TcpPayload.Serialize((int)HeartbeatProtocol.Knock, BitConverter.GetBytes(sentTime.Ticks)));
+			await tcpStream.WriteAsync(TcpPayload.Serialize((int)HeartbeatProtocol.Knock,
+				BitConverter.GetBytes(sentTime.Ticks))).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -100,7 +101,7 @@
 			}
 			rtt = TimeSpan.FromTicks(displacement >> 1);
 			Logger.Trace($"RTT : {rtt.TotalMilliseconds}");
-			await WriteAsync(TcpPayload.Serialize((int)HeartbeatProtocol.Response, BitConverter.GetBytes(now.Ticks)));
+			await WriteAsync(TcpPayload.Serialize((int)HeartbeatProtocol.Response, BitConverter.GetBytes(now.Ticks))).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -125,7 +126,7 @@
 		protected async Task TimeRequest()
 		{
 			clientNow = DateTime.UtcNow;
-			await WriteAsync(TcpPayload.Serialize((int)HeartbeatProtocol.TimeRequest, BitConverter.GetBytes(clientNow.Ticks)));
+			await WriteAsync(TcpPayload.Serialize((int)HeartbeatProtocol.TimeRequest, BitConverter.GetBytes(clientNow.Ticks))).ConfigureAwait(false);
 		}
 
 		protected void EstimateServerTime(long serverTime)

@@ -22,8 +22,8 @@ internal class Program
 			Console.WriteLine("Try Coonect to Server");
 			try
 			{
-				await networkSession.ConnectAsync(IPAddress.Parse("127.0.0.1"), 8888);
-				await Task.Delay(1000);
+				await networkSession.ConnectAsync(IPAddress.Parse("127.0.0.1"), 8888).ConfigureAwait(false);
+				await Task.Delay(1000).ConfigureAwait(false);
 			}
 			catch (SocketException ex)
 			{
@@ -40,7 +40,7 @@ internal class Program
 			//	Console.WriteLine($"Dropping Packet {i}");
 			//	continue;
 			//}
-			await client.SendAsync($"message {i}");
+			await client.SendAsync($"message {i}").ConfigureAwait(false);
 		}
 
 		while (true)
@@ -49,9 +49,9 @@ internal class Program
 			var buf = builder.SerializePacket("Hello?");
 			if (networkSession.Connected)
 			{
-				await networkSession.SendAsync(buf);
+				await networkSession.SendAsync(buf).ConfigureAwait(false);
 			}
-			await Task.Delay(1000);
+			await Task.Delay(1000).ConfigureAwait(false);
 		}
 	}
 }

@@ -128,12 +128,12 @@ namespace BaobabP2P
 
 			// 초기 패킷 전송 (NAT에 구멍 뚫기)
 			byte[] punchPacket = Encoding.UTF8.GetBytes("Punching a hole!");
-			await peerClient.SendAsync(punchPacket, punchPacket.Length, peerEndPoint);
+			await peerClient.SendAsync(punchPacket, punchPacket.Length, peerEndPoint).ConfigureAwait(false);
 
 			Console.WriteLine("초기 패킷 전송 완료, 연결 시도 중...");
 
 			// 데이터 수신 대기
-			var data = await peerClient.ReceiveAsync();
+			var data = await peerClient.ReceiveAsync().ConfigureAwait(false);
 			string receivedMessage = Encoding.UTF8.GetString(data.Buffer);
 			Console.WriteLine($"받은 메시지: {receivedMessage}");
 			return peerClient;

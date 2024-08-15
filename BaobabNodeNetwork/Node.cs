@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BaobabNodeNetwork
@@ -28,17 +30,26 @@ namespace BaobabNodeNetwork
 		public int CurrentTerm { get; private set; }
 		public int VotedFor { get; private set; }
 		public List<LogEntry> Log { get; private set; }
-		private NodeChannel channel { get; set; } = new NodeChannel();
+		private NodeChannel channel { get; set; }
 
-		public Node(int id)
+		private Random Random = new Random();
+
+		public Node(int id, IEnumerable<(int, IPEndPoint)> nodeList)
 		{
 			Id = id;
 			State = NodeState.Follower;
 			CurrentTerm = 0;
 			VotedFor = -1;
 			Log = new List<LogEntry>();
-			channel.Start(id);
+			channel = new NodeChannel(id, nodeList);
 			Task.Run(() => ListenForMessages());
+			Start();
+		}
+
+		private void Start()
+		{
+			var heartbeatTimeout = Random.Next(4000, 5000);
+			channel.Start(1000, heartbeatTimeout);
 		}
 
 		public void BecomeCandidate()
@@ -73,33 +84,33 @@ namespace BaobabNodeNetwork
 				{
 					Console.WriteLine($"Message from Node {Id} to Node {target.Id} lost due to simulated packet loss.");
 					retryCount++;
-					await Task.Delay(fixedDelayMilliseconds); // 재시도 전에 고정 지연
+					await Task.Delay(fixedDelayMilliseconds).ConfigureAwait(false); // 재시도 전에 고정 지연
 					continue;
 				}
 
 				try
 				{
 					byte[] data = Encoding.UTF8.GetBytes($"{message.Term},{message.SenderId},{message.Command}");
-					await channel.SendMessage(data);
+					await channel.SendAsync(target.Id, data).ConfigureAwait(false);
 					Console.WriteLine($"Message sent from Node {Id} to Node {target.Id}: {message.Command}");
 
 					// 확인 응답 대기
-					byte[] ackBuffer = new byte[1024];
-					var readTask = channel.ReadMessage(ackBuffer);
-					if (readTask.Result > 0)
-					{
-						var ackBytesRead = readTask.Result;
-						string ackMessage = Encoding.UTF8.GetString(ackBuffer, 0, ackBytesRead);
-						if (ackMessage == "ACK")
-						{
-							Console.WriteLine($"ACK received from Node {target.Id}");
-							return true; // 성공적으로 전송됨
-						}
-					}
-					else
-					{
-						Console.WriteLine($"No ACK received from Node {target.Id} within timeout period.");
-					}
+					//byte[] ackBuffer = new byte[1024];
+					//var readTask = channel.ReadAsync(ackBuffer);
+					//if (readTask.Result > 0)
+					//{
+					//	var ackBytesRead = readTask.Result;
+					//	string ackMessage = Encoding.UTF8.GetString(ackBuffer, 0, ackBytesRead);
+					//	if (ackMessage == "ACK")
+					//	{
+					//		Console.WriteLine($"ACK received from Node {target.Id}");
+					//		return true; // 성공적으로 전송됨
+					//	}
+					//}
+					//else
+					//{
+					//	Console.WriteLine($"No ACK received from Node {target.Id} within timeout period.");
+					//}
 				}
 				catch (SocketException ex)
 				{
@@ -113,7 +124,7 @@ namespace BaobabNodeNetwork
 				retryCount++;
 				if (retryCount < maxRetries)
 				{
-					await Task.Delay(fixedDelayMilliseconds); // 재시도 전에 고정 지연
+					await Task.Delay(fixedDelayMilliseconds).ConfigureAwait(false); // 재시도 전에 고정 지연
 				}
 			}
 
@@ -128,36 +139,35 @@ namespace BaobabNodeNetwork
 			{
 				try
 				{
-					await channel.Accept();
-					byte[] buffer = new byte[1024];
-					int bytesRead = await channel.ReadMessage(buffer);
-					if (bytesRead > 0)
-					{
-						if (random.NextDouble() < lossProbability)
-						{
-							Console.WriteLine($"Message lost due to simulated packet loss.");
-							continue; // 패킷 손실 시 메시지 처리를 무시
-						}
+					//byte[] buffer = new byte[1024];
+					//int bytesRead = await channel.ReadAsync(buffer);
+					//if (bytesRead > 0)
+					//{
+					//	if (random.NextDouble() < lossProbability)
+					//	{
+					//		Console.WriteLine($"Message lost due to simulated packet loss.");
+					//		continue; // 패킷 손실 시 메시지 처리를 무시
+					//	}
 
-						string messageData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-						string[] parts = messageData.Split(',');
-						Message message = new Message
-						{
-							Term = int.Parse(parts[0]),
-							SenderId = int.Parse(parts[1]),
-							Command = parts[2]
-						};
+					//	string messageData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+					//	string[] parts = messageData.Split(',');
+					//	Message message = new Message
+					//	{
+					//		Term = int.Parse(parts[0]),
+					//		SenderId = int.Parse(parts[1]),
+					//		Command = parts[2]
+					//	};
 
-						// 인위적인 지연 추가
-						await Task.Delay(500); // 500ms 지연
+					//	// 인위적인 지연 추가
+					//	await Task.Delay(500); // 500ms 지연
 
-						ReceiveMessage(message);
+					//	ReceiveMessage(message);
 
-						// 확인 응답 전송
-						byte[] ackData = Encoding.UTF8.GetBytes("ACK");
-						await channel.SendMessage(ackData);
-						Console.WriteLine($"ACK sent to Node {message.SenderId}");
-					}
+					//	// 확인 응답 전송
+					//	byte[] ackData = Encoding.UTF8.GetBytes("ACK");
+					//	await channel.SendMessage(ackData);
+					//	Console.WriteLine($"ACK sent to Node {message.SenderId}");
+					//}
 				}
 				catch (SocketException ex)
 				{

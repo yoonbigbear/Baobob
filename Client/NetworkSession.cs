@@ -37,6 +37,6 @@
 			_ = MessageHandler.Invoke(payload.ProtocolId, Packet.GetRootAsPacket(new Google.FlatBuffers.ByteBuffer(payload.Data)));
 		}
 
-		public async Task SendAsync(ReadOnlyMemory<byte> buffer) => await WriteAsync(buffer);
+		public async Task SendAsync(ReadOnlyMemory<byte> buffer) => await WriteAsync(buffer).ConfigureAwait(false);
 	}
 }

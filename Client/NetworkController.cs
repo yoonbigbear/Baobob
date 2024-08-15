@@ -16,6 +16,6 @@
 			session = new NetworkSession(tcpClient!.Client, TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(4));
 		}
 
-		public async Task SendAsync(ReadOnlyMemory<byte> readOnlyMemory) => await session!.SendAsync(readOnlyMemory);
+		public async Task SendAsync(ReadOnlyMemory<byte> readOnlyMemory) => await session!.SendAsync(readOnlyMemory).ConfigureAwait(false);
 	}
 }

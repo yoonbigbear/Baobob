@@ -27,7 +27,7 @@
 			}
 			if (caller is IAsyncCaller<T> asyncCaller)
 			{
-				await asyncCaller.Invoke(message);
+				await asyncCaller.Invoke(message).ConfigureAwait(false);
 			}
 			else
 			{

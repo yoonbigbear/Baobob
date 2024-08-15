@@ -27,7 +27,7 @@
 			while (true)
 			{
 				// 클라이언트로부터 UDP 패킷 수신
-				UdpReceiveResult result = await udpClient.ReceiveAsync();
+				UdpReceiveResult result = await udpClient.ReceiveAsync().ConfigureAwait(false);
 				ProcessReceivedPacket(result);
 			}
 		}

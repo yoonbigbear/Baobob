@@ -37,7 +37,7 @@
 
 				string message2arg = "From Message2";
 				var message2 = new Message2 { Message = message2arg };
-				await DispatcherHandlersIMessage.Invoke(message2.MessageID, message2);
+				await DispatcherHandlersIMessage.Invoke(message2.MessageID, message2).ConfigureAwait(false);
 				Assert.AreEqual(DispatcherHandlersIMessage.Message2, message2arg);
 			}
 
@@ -69,7 +69,7 @@
 
 					//read
 					var packet2 = Packet2.GetRootAsPacket2(buffer);
-					await DispatcherHandlersIFlatbuffer.Invoke(typeof(Packet2).FullName!.GetHashCode(), packet2)!;
+					await DispatcherHandlersIFlatbuffer.Invoke(typeof(Packet2).FullName!.GetHashCode(), packet2)!.ConfigureAwait(false);
 					Assert.AreEqual(DispatcherHandlersIFlatbuffer.Message2, message2arg);
 				}
 			}
