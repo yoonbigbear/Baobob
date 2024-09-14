@@ -1,7 +1,9 @@
 ﻿using System.Text;
 
-namespace BaobabNetwork
+namespace BaobabUnitTest
 {
+	using BaobabNetwork;
+
 	public class ClientRSAAes : RSABase, IDisposable
 	{
 		public AESBase aes = new();

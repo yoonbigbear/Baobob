@@ -1,5 +1,6 @@
 ﻿namespace BaobabNetwork
 {
+	using BaobobCore;
 	using System;
 	using System.Net;
 	using System.Net.Sockets;
@@ -22,7 +23,7 @@
 
 		public async Task StartAsync()
 		{
-			Console.WriteLine("RUDP 서버 시작됨...");
+			Logger.LogInfo("start listen rudp");
 
 			while (true)
 			{
@@ -46,7 +47,7 @@
 			if (packet.Header.SequenceNumber == expectedSequenceNumber)
 			{
 				// 패킷 내용 출력
-				Console.WriteLine($"수신된 패킷: {packet.Header.SequenceNumber} - {Encoding.UTF8.GetString(packet.Data!)}");
+				ProcessData(packet.Data);
 				expectedSequenceNumber++;
 			}
 			else if (packet.Header.SequenceNumber > expectedSequenceNumber)
@@ -66,5 +67,7 @@
 			// ACK 전송: 클라이언트의 IPEndPoint를 사용하여 ACK 전송
 			SendAck(BitConverter.GetBytes(packet.Header.SequenceNumber), result.RemoteEndPoint);
 		}
+
+		protected virtual void ProcessData(byte[] bytes) => throw new NotImplementedException();
 	}
 }

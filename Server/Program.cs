@@ -1,10 +1,8 @@
 ﻿namespace Project
 {
-	using BaobabNetwork;
 	using BaobobCore;
 	using Server;
 	using System.Net;
-	using System.Net.Sockets;
 	using System.Reflection;
 
 	public class Program
@@ -12,9 +10,6 @@
 		private static void Main()
 		{
 			MessageHandler.BindHandler(Assembly.GetExecutingAssembly());
-
-			RudpServer server = new RudpServer(9000);
-			Task serverTask = server.StartAsync();
 
 			using (GameServer builder = new GameServer(IPAddress.Any, 8888))
 			{

@@ -1,6 +1,5 @@
 ﻿namespace Client;
 
-using BaobabNetwork;
 using BaobabNetwork.Tcp;
 using Google.FlatBuffers;
 using MyGame.Sample;
@@ -29,18 +28,6 @@ internal class Program
 			{
 				Console.WriteLine($"Connection Failed. Retry attemp {retryCount += 1} {ex.Message}");
 			}
-		}
-
-		RudpClient client = new RudpClient("127.0.0.1", 9000);
-		for (int i = 0; i < 210; ++i)
-		{
-			//의도적으로 패킷을 드랍시켜서 수신측에서 재전송을 요청하도록 합니다.
-			//if (i == 2 || Random.Shared.Next(0, 2) == 0)
-			//{
-			//	Console.WriteLine($"Dropping Packet {i}");
-			//	continue;
-			//}
-			await client.SendAsync($"message {i}").ConfigureAwait(false);
 		}
 
 		while (true)
