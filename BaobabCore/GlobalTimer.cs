@@ -73,13 +73,13 @@
 			_lastRttSend = now;
 		}
 
-		public static void Repeat<T>(TimeSpan timeSpan, Func<T> func, CancellationToken cancellationToken)
+		public static void Repeat<T>(TimeSpan interval, Func<T> func, CancellationToken cancellationToken)
 		{
-			Task.Factory.StartNew(() =>
+			Task.Factory.StartNew(async () =>
 			{
 				while (true)
 				{
-					Task.Delay(timeSpan);
+					await Task.Delay(interval).ConfigureAwait(false);
 					func.Invoke();
 				}
 			}

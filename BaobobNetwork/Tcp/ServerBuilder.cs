@@ -5,7 +5,6 @@
 	using System.Net;
 	using System.Net.Security;
 	using System.Net.Sockets;
-	using System.Security.Cryptography.X509Certificates;
 	using System.Threading;
 	using System.Threading.Tasks;
 
@@ -16,12 +15,10 @@
 
 		public ServerBuilder(IPAddress ip, short port)
 		{
-			;
-
 			listener = new TcpListener(ip, port);
 		}
 
-		public void StartListener(CancellationToken cancellationToken)
+		public ServerBuilder StartListener(CancellationToken cancellationToken)
 		{
 			listener.Start();
 
@@ -34,6 +31,18 @@
 					AcceptSession(accepted);
 				}
 			});
+
+			return this;
+		}
+
+		public ServerBuilder UseCompression()
+		{
+			return this;
+		}
+
+		public ServerBuilder UseEncryption()
+		{
+			return this;
 		}
 
 		public virtual void AcceptSession(Socket? socket)

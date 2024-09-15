@@ -1,4 +1,4 @@
-﻿namespace BaobabWorker
+﻿namespace BaobabTaskSerializer
 {
 	using System;
 	using System.Threading.Tasks;
