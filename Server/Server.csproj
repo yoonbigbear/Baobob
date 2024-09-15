@@ -28,6 +28,9 @@
   
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="server.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="task.StartNew" />
   </ItemGroup>
   

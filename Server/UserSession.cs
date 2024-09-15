@@ -5,13 +5,25 @@
 	using Google.FlatBuffers;
 	using MyGame.Sample;
 	using System;
+	using System.Net.Security;
 	using System.Net.Sockets;
+	using System.Security.Cryptography.X509Certificates;
 
 	public class UserSession : TcpSession
 	{
-		public UserSession(Socket socket)
+		private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
+		public UserSession(Socket socket, X509Certificate2 serverSertificate)
 			: base(socket, TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(4))
 		{
+			var sslStream = new SslStream(stream, false);
+			sslStream.AuthenticateAsServer(
+				serverSertificate,
+				false,
+				System.Security.Authentication.SslProtocols.Tls13,
+				false);
+			stream = sslStream;
+
 			_ = ReadAsync();
 			RepeatKnock();
 		}

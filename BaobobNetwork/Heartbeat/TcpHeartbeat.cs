@@ -3,7 +3,6 @@
 	using BaobabNetwork.Tcp;
 	using BaobobCore;
 	using System;
-	using System.Runtime.InteropServices;
 	using System.Threading.Tasks;
 
 	public partial class TcpSession
@@ -39,7 +38,7 @@
 					while (true)
 					{
 						sentTime = DateTime.UtcNow;
-						await tcpStream.WriteAsync(TcpPayload.Serialize((int)HeartbeatProtocol.Knock, BitConverter.GetBytes(sentTime.Ticks))).ConfigureAwait(false);
+						await stream.WriteAsync(TcpPayload.Serialize((int)HeartbeatProtocol.Knock, BitConverter.GetBytes(sentTime.Ticks))).ConfigureAwait(false);
 						await Task.Delay(heartbeatInterval).ConfigureAwait(false);
 					}
 				}, cancellationTokenSource.Token);
@@ -83,7 +82,7 @@
 		protected async Task ResponseKnockFromServer()
 		{
 			sentTime = DateTime.UtcNow;
-			await tcpStream.WriteAsync(TcpPayload.Serialize((int)HeartbeatProtocol.Knock,
+			await stream.WriteAsync(TcpPayload.Serialize((int)HeartbeatProtocol.Knock,
 				BitConverter.GetBytes(sentTime.Ticks))).ConfigureAwait(false);
 		}
 
@@ -116,7 +115,7 @@
 			}
 
 			Logger.LogWarning($"Session heartbeat timeout Id:{SessionId}, Interval:{heartbeatInterval}");
-			tcpStream.Close();
+			stream.Close();
 		}
 
 		/// <summary>

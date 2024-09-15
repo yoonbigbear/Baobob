@@ -20,7 +20,7 @@
 
 		public async Task ConnectAsync(IPAddress ip, short port)
 		{
-			tcpClient?.ConnectAsync(ip, port).ConfigureAwait(false);
+			await tcpClient!.ConnectAsync(ip, port).ConfigureAwait(false);
 			AcceptSession(tcpClient.Client);
 		}
 

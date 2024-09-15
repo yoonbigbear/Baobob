@@ -2,7 +2,7 @@
 {
 	using System;
 	using System.Buffers;
-	using System.Collections.Generic;
+	using System.IO;
 	using System.Net.Sockets;
 	using System.Threading;
 	using System.Threading.Tasks;
@@ -10,25 +10,25 @@
 	public partial class TcpSession : IDisposable
 	{
 		public int SessionId { get; set; }
-		private NetworkStream tcpStream { get; }
+		public Stream stream { get; set; }
 		private bool disposedValue;
 		private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
 		public TcpSession(Socket socket, TimeSpan heartbeatInterval, TimeSpan heartbeatTimeout)
 		{
-			tcpStream = new NetworkStream(socket);
+			stream = new NetworkStream(socket);
 			this.heartbeatInterval = heartbeatInterval;
 			this.heartbeatTimeout = heartbeatTimeout;
 		}
 
-		protected async Task ReadAsync()
+		protected virtual async Task ReadAsync()
 		{
 			try
 			{
 				while (true)
 				{
 					var buffer = ArrayPool<byte>.Shared.Rent(1024);
-					var byteReceived = await tcpStream.ReadAsync(buffer, cancellationTokenSource.Token).ConfigureAwait(false);
+					var byteReceived = await stream.ReadAsync(buffer, cancellationTokenSource.Token).ConfigureAwait(false);
 
 					DeserializeMessage(buffer, byteReceived);
 
@@ -38,13 +38,13 @@
 			finally
 			{
 				cancellationTokenSource.Dispose();
-				tcpStream.Close();
+				stream.Close();
 			}
 		}
 
-		protected async Task WriteAsync(ReadOnlyMemory<byte> buffer)
+		protected virtual async Task WriteAsync(ReadOnlyMemory<byte> buffer)
 		{
-			await tcpStream.WriteAsync(buffer).ConfigureAwait(false);
+			await stream.WriteAsync(buffer).ConfigureAwait(false);
 		}
 
 		protected virtual void DeserializeMessage(byte[] buffer, int byteRecevied)
@@ -65,7 +65,7 @@
 				{
 					// TODO: 관리형 상태(관리형 개체)를 삭제합니다.
 					cancellationTokenSource.Dispose();
-					tcpStream.Dispose();
+					stream.Dispose();
 				}
 
 				// TODO: 비관리형 리소스(비관리형 개체)를 해제하고 종료자를 재정의합니다.
